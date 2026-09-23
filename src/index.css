@@ -1,0 +1,244 @@
+@import "tailwindcss";
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 10mm 11mm 10mm 11mm;
+  }
+
+  /* Reset root, html and body to standard continuous flow */
+  html, body, #root {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 100% !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+    color: #111827 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Completely remove non-print elements from layout flow */
+  .print-hide,
+  .no-print {
+    display: none !important;
+  }
+
+  /* Reveal dedicated print-only elements during window.print() */
+  .print-only {
+    display: block !important;
+  }
+
+  /* Reset root containers to avoid overflow clipping */
+  #root > div {
+    overflow: visible !important;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  /* Modal container resets during print - removes fixed clipping and height locks */
+  .modal-backdrop-print {
+    position: static !important;
+    inset: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    overflow: visible !important;
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .modal-dialog-print {
+    position: static !important;
+    max-height: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
+    display: block !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+  }
+
+  .modal-scroll-print {
+    overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    display: block !important;
+    height: auto !important;
+  }
+
+  /* Academic CV container paginates naturally across all A4 pages */
+  #printable-academic-cv {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    color: #111827 !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  /* AI Tutor Printable Answer Sheet styling in print */
+  .ai-tutor-container {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  #printable-answer-sheet {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
+  }
+
+  /* Prevent awkward page breaks inside citation entries or sections */
+  .avoid-break {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  .page-break-before {
+    page-break-before: always !important;
+    break-before: page !important;
+  }
+
+  pre {
+    background: #f8fafc !important;
+    color: #0f172a !important;
+    border: 1px solid #cbd5e1 !important;
+    padding: 8px !important;
+    font-size: 9pt !important;
+    line-height: 1.35 !important;
+    white-space: pre-wrap !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .cv-justified {
+    text-align: justify !important;
+    text-justify: inter-word !important;
+    hyphens: auto !important;
+    -webkit-hyphens: auto !important;
+  }
+
+  /* Academic CV Header Print Isolation - Guarantees Zero Letter Collision */
+  .cv-header-row {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+    gap: 16px !important;
+    width: 100% !important;
+  }
+
+  .cv-header-left {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+  }
+
+  .cv-header-right {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+    padding: 6px 10px !important;
+    font-size: 7.5pt !important;
+    line-height: 1.35 !important;
+    background: #f8fafc !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 6px !important;
+  }
+
+  .cv-header-right div {
+    font-size: 7.5pt !important;
+    white-space: nowrap !important;
+  }
+
+  .cv-single-line {
+    white-space: nowrap !important;
+    font-size: 8pt !important;
+    letter-spacing: -0.025em !important;
+    line-height: 1.4 !important;
+  }
+
+  .cv-emails {
+    font-size: 8pt !important;
+  }
+
+  .cv-qr-badge {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background: #ffffff !important;
+    border: 1.5px solid #0f172a !important;
+    padding: 4px !important;
+  }
+}
+
+/* Academic CV Typography & Justification System */
+.cv-justified {
+  text-align: justify !important;
+  text-justify: inter-word !important;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+
+.cv-serif {
+  font-family: 'Cambria', 'Georgia', 'Times New Roman', 'Palatino Linotype', 'Book Antiqua', serif !important;
+}
+
+.cv-sans {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif !important;
+}
+
+.cv-heading {
+  letter-spacing: 0.04em;
+}
+
+
+
