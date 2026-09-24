@@ -34,12 +34,12 @@ export default function Navbar({ activeTab, setActiveTab, dynamicMetrics, onOpen
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-xl border-b border-slate-200/90 shadow-2xs w-full">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-18 gap-2 lg:gap-4">
+      <div className="w-full max-w-7xl mx-auto px-2 sm:px-4 lg:px-6">
+        <div className="flex items-center justify-between h-16 sm:h-18 gap-1.5 sm:gap-2 lg:gap-3">
           
           {/* Brand: Official Photo Avatar, Name & Compact Subtitle */}
           <div 
-            className="flex items-center space-x-3 cursor-pointer group shrink-0 select-none mr-2 lg:mr-4" 
+            className="flex items-center space-x-2.5 cursor-pointer group shrink-0 select-none mr-1 lg:mr-2" 
             onClick={() => setActiveTab('about')}
           >
             {/* Dr. Farooq's Photo Avatar */}
@@ -72,13 +72,13 @@ export default function Navbar({ activeTab, setActiveTab, dynamicMetrics, onOpen
                 </span>
               </div>
               <p className="text-[11px] sm:text-xs text-slate-500 font-medium tracking-tight whitespace-nowrap">
-                HOD – CSE • SREC (Autonomous)
+                HOD – CSE • SREC<span className="hidden xl:inline"> (Autonomous)</span>
               </p>
             </div>
           </div>
 
           {/* Desktop Navigation - Clean, Sleek, Compact Segmented Bar */}
-          <nav className="hidden lg:flex items-center p-1 rounded-xl bg-slate-100/90 border border-slate-200 shadow-inner space-x-1 shrink-0">
+          <nav className="hidden lg:flex items-center p-0.5 xl:p-1 rounded-xl bg-slate-100/90 border border-slate-200 shadow-inner space-x-0.5 xl:space-x-1 shrink-0">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = activeTab === item.id;
@@ -95,14 +95,21 @@ export default function Navbar({ activeTab, setActiveTab, dynamicMetrics, onOpen
                       if (el) el.scrollIntoView({ behavior: 'smooth' });
                     }
                   }}
-                  className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-150 whitespace-nowrap cursor-pointer select-none ${
+                  className={`flex items-center space-x-1 xl:space-x-1.5 px-2 xl:px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-150 whitespace-nowrap cursor-pointer select-none ${
                     isActive
                       ? 'bg-white text-indigo-700 shadow-2xs border border-slate-200/80 ring-1 ring-indigo-500/10'
                       : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
                   }`}
                 >
                   <Icon className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-indigo-600' : 'text-slate-400'}`} />
-                  <span>{item.label}</span>
+                  <span>
+                    {item.id === 'research' ? (
+                      <>
+                        <span className="xl:hidden">Research</span>
+                        <span className="hidden xl:inline">Research & Patents</span>
+                      </>
+                    ) : item.label}
+                  </span>
 
                   {item.pulse && (
                     <span className="relative flex h-2 w-2">
@@ -112,7 +119,7 @@ export default function Navbar({ activeTab, setActiveTab, dynamicMetrics, onOpen
                   )}
 
                   {item.badge && (
-                    <span className={`text-[9px] font-extrabold px-1.5 py-0.2 rounded-md border whitespace-nowrap ${
+                    <span className={`text-[9px] font-extrabold px-1 xl:px-1.5 py-0.2 rounded-md border whitespace-nowrap ${
                       isActive 
                         ? 'bg-indigo-50 text-indigo-700 border-indigo-200' 
                         : 'bg-purple-50 text-purple-700 border-purple-200'
@@ -126,13 +133,13 @@ export default function Navbar({ activeTab, setActiveTab, dynamicMetrics, onOpen
           </nav>
 
           {/* Right Action Controls: Quick Profiles Dropdown & Ask AI CTA */}
-          <div className="hidden md:flex items-center space-x-2 shrink-0">
+          <div className="hidden md:flex items-center space-x-1.5 xl:space-x-2 shrink-0">
             
             {/* Quick Profiles Dropdown */}
             <div className="relative">
               <button
                 onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
-                className="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg text-xs font-bold text-slate-700 hover:text-indigo-600 bg-slate-50 hover:bg-slate-100 border border-slate-200 transition-colors cursor-pointer select-none"
+                className="flex items-center space-x-1 px-2 xl:px-2.5 py-1.5 rounded-lg text-xs font-bold text-slate-700 hover:text-indigo-600 bg-slate-50 hover:bg-slate-100 border border-slate-200 transition-colors cursor-pointer select-none"
               >
                 <span>Profiles</span>
                 <ChevronDown className="w-3 h-3 opacity-60" />
@@ -167,29 +174,29 @@ export default function Navbar({ activeTab, setActiveTab, dynamicMetrics, onOpen
               href={PROFESSOR_PROFILE.youtube || "https://www.youtube.com/@farooktechtricks"}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-bold transition-all cursor-pointer whitespace-nowrap shadow-2xs"
+              className="flex items-center space-x-1 px-2 xl:px-2.5 py-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-bold transition-all cursor-pointer whitespace-nowrap shadow-2xs"
               title="Visit Dr. Farooq's YouTube Channel: Farook Tech Tricks (@farooktechtricks)"
             >
-              <YoutubeIcon className="w-3.5 h-3.5 text-red-600" />
+              <YoutubeIcon className="w-3.5 h-3.5 text-red-600 shrink-0" />
               <span className="hidden xl:inline">YouTube</span>
             </a>
 
             {/* 1-Click Academic CV Button */}
             <button
               onClick={onOpenCV}
-              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs font-bold transition-all cursor-pointer whitespace-nowrap shadow-2xs"
+              className="flex items-center space-x-1.5 px-2.5 xl:px-3 py-1.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs font-bold transition-all cursor-pointer whitespace-nowrap shadow-2xs"
               title="Generate & Download 1-Click Academic CV (PDF)"
             >
-              <FileText className="w-3.5 h-3.5 text-indigo-600" />
-              <span>Academic CV</span>
+              <FileText className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
+              <span><span className="hidden xl:inline">Academic </span>CV</span>
             </button>
 
             {/* Quick AI CTA */}
             <button
               onClick={() => setActiveTab('ai-tutor')}
-              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-extrabold shadow-sm transition-all transform hover:-translate-y-0.5 cursor-pointer whitespace-nowrap"
+              className="flex items-center space-x-1.5 px-2.5 xl:px-3 py-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-extrabold shadow-sm transition-all transform hover:-translate-y-0.5 cursor-pointer whitespace-nowrap shrink-0"
             >
-              <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
+              <Sparkles className="w-3.5 h-3.5 text-yellow-300 shrink-0" />
               <span>Ask AI</span>
             </button>
           </div>
