@@ -186,7 +186,7 @@ export async function fetchDriveMaterials(forceRefresh = false) {
   // Attempt live fetch from Apps Script
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 9000); // 9 sec timeout
+    const timeoutId = setTimeout(() => controller.abort(), 20000); // 20 sec timeout for cold starts
 
     const response = await fetch(APPS_SCRIPT_EXEC_URL, {
       signal: controller.signal,
@@ -221,12 +221,29 @@ export async function fetchDriveMaterials(forceRefresh = false) {
     console.warn("Drive sync check:", err.message);
   }
 
-  // Graceful fallback to curated course materials
+  // Graceful fallback: check if any previously cached drive files exist
+  try {
+    const cached = localStorage.getItem(CACHE_KEY);
+    if (cached) {
+      const { data } = JSON.parse(cached);
+      if (Array.isArray(data) && data.length > 0) {
+        return {
+          source: 'cache',
+          isLive: true,
+          files: data,
+          lastChecked: new Date().toLocaleTimeString()
+        };
+      }
+    }
+  } catch {
+    // Ignore cache read errors
+  }
+
+  // Fallback to curated course materials
   return {
     source: 'fallback',
     isLive: false,
     files: CURATED_COURSE_MATERIALS,
-    lastChecked: new Date().toLocaleTimeString(),
-    setupNotice: true
+    lastChecked: new Date().toLocaleTimeString()
   };
 }

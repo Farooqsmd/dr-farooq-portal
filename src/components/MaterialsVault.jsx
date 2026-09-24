@@ -13,7 +13,6 @@ import {
   Filter, 
   Grid, 
   List, 
-  AlertCircle,
   HelpCircle,
   FileCode,
   SlidersHorizontal
@@ -32,7 +31,6 @@ export default function MaterialsVault({ onSelectSubjectForTutor }) {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedRegulation, setSelectedRegulation] = useState('All');
   const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
-  const [showConfigHelper, setShowConfigHelper] = useState(false);
 
   // Load materials from Drive or cache on component mount
   const loadMaterials = async (forceRefresh = false) => {
@@ -153,72 +151,6 @@ export default function MaterialsVault({ onSelectSubjectForTutor }) {
           </div>
         </div>
       </div>
-
-      {/* Helpful Setup Assistant / Status Card for Dr. Farooq */}
-      {syncStatus?.setupNotice && (
-        <div className="p-4 sm:p-5 rounded-2xl bg-amber-50/80 border border-amber-200/90 text-amber-900 shadow-2xs">
-          <div className="flex items-start justify-between gap-3">
-            <div className="flex items-start space-x-3">
-              <AlertCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
-              <div className="space-y-1">
-                <h3 className="text-sm font-bold text-amber-900">
-                  Google Drive Live Synchronization Setup Guide
-                </h3>
-                <p className="text-xs text-amber-800 leading-relaxed">
-                  Your Google Apps Script Web App is deployed! To enable automatic real-time sync with your Drive folder, update <strong>Line 3</strong> in your Apps Script:
-                </p>
-                <div className="mt-2 p-2.5 rounded-lg bg-white/90 border border-amber-300 font-mono text-xs text-slate-800 select-all overflow-x-auto">
-                  const FOLDER_ID = &quot;179fppvZLI6fn0p7qmZJYO0wjjYLwnC2w&quot;;
-                </div>
-                <p className="text-[11px] text-amber-700 mt-1">
-                  Then click <strong>Deploy &gt; Manage deployments &gt; Edit (pencil icon) &gt; Version: New Version &gt; Deploy</strong>. The portal will then sync automatically! In the meantime, full foundation course materials are loaded below.
-                </p>
-              </div>
-            </div>
-            <button 
-              onClick={() => setShowConfigHelper(!showConfigHelper)}
-              className="text-xs font-semibold text-amber-800 hover:text-amber-950 underline shrink-0"
-            >
-              {showConfigHelper ? 'Hide Details' : 'View Code'}
-            </button>
-          </div>
-
-          {showConfigHelper && (
-            <div className="mt-4 pt-4 border-t border-amber-200/80 text-xs space-y-2">
-              <p className="font-semibold text-amber-950">Recommended Apps Script Code (supports auto URL/ID extraction):</p>
-              <pre className="p-3 bg-slate-900 text-slate-100 rounded-xl overflow-x-auto text-[11px] font-mono leading-relaxed">
-{`function doGet() {
-  var folderId = "179fppvZLI6fn0p7qmZJYO0wjjYLwnC2w";
-  if (folderId.indexOf("/folders/") !== -1) {
-    folderId = folderId.split("/folders/")[1].split("?")[0];
-  }
-  var folder = DriveApp.getFolderById(folderId);
-  var filesList = [];
-  
-  var files = folder.getFiles();
-  while (files.hasNext()) {
-    var file = files.next();
-    filesList.push({
-      id: file.getId(),
-      name: file.getName(),
-      size: (file.getSize() / (1024 * 1024)).toFixed(2) + " MB",
-      mimeType: file.getMimeType(),
-      updated: file.getLastUpdated().toISOString().split("T")[0],
-      category: "Lecture Notes",
-      viewUrl: file.getUrl(),
-      downloadUrl: "https://drive.google.com/uc?export=download&id=" + file.getId()
-    });
-  }
-  
-  return ContentService
-    .createTextOutput(JSON.stringify({ status: "success", count: filesList.length, files: filesList }))
-    .setMimeType(ContentService.MimeType.JSON);
-}`}
-              </pre>
-            </div>
-          )}
-        </div>
-      )}
 
       {/* Filter & Search Toolbar */}
       <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-2xs space-y-4">

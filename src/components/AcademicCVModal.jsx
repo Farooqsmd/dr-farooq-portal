@@ -363,7 +363,7 @@ export default function AcademicCVModal({ isOpen, onClose, dynamicMetrics, publi
           {/* THE PRINTABLE ACADEMIC CV CONTAINER (#printable-academic-cv) */}
           <div 
             id="printable-academic-cv" 
-            className={`max-w-4xl mx-auto bg-white p-6 sm:p-10 lg:p-12 shadow-2xl border border-slate-300 text-slate-900 rounded-none ${
+            className={`max-w-4xl mx-auto bg-white px-8 sm:px-14 lg:px-16 py-8 sm:py-12 shadow-2xl border border-slate-300 text-slate-900 rounded-none ${
               fontFamily === 'serif' ? 'cv-serif' : 'cv-sans'
             }`}
             style={{ lineHeight: '1.65' }}
