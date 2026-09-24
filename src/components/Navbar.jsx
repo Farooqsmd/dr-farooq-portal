@@ -72,13 +72,13 @@ export default function Navbar({ activeTab, setActiveTab, dynamicMetrics, onOpen
                 </span>
               </div>
               <p className="text-[11px] sm:text-xs text-slate-500 font-medium tracking-tight whitespace-nowrap">
-                HOD – CSE • SREC<span className="hidden xl:inline"> (Autonomous)</span>
+                HOD – CSE • SREC (Autonomous)
               </p>
             </div>
           </div>
 
           {/* Desktop Navigation - Clean, Sleek, Compact Segmented Bar */}
-          <nav className="hidden lg:flex items-center p-0.5 xl:p-1 rounded-xl bg-slate-100/90 border border-slate-200 shadow-inner space-x-0.5 xl:space-x-1 shrink-0">
+          <nav className="hidden lg:flex items-center p-1 rounded-xl bg-slate-100/90 border border-slate-200 shadow-inner space-x-1 shrink-0">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = activeTab === item.id;
@@ -95,21 +95,14 @@ export default function Navbar({ activeTab, setActiveTab, dynamicMetrics, onOpen
                       if (el) el.scrollIntoView({ behavior: 'smooth' });
                     }
                   }}
-                  className={`flex items-center space-x-1 xl:space-x-1.5 px-2 xl:px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-150 whitespace-nowrap cursor-pointer select-none ${
+                  className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-150 whitespace-nowrap cursor-pointer select-none ${
                     isActive
                       ? 'bg-white text-indigo-700 shadow-2xs border border-slate-200/80 ring-1 ring-indigo-500/10'
                       : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
                   }`}
                 >
                   <Icon className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-indigo-600' : 'text-slate-400'}`} />
-                  <span>
-                    {item.id === 'research' ? (
-                      <>
-                        <span className="xl:hidden">Research</span>
-                        <span className="hidden xl:inline">Research & Patents</span>
-                      </>
-                    ) : item.label}
-                  </span>
+                  <span>{item.label}</span>
 
                   {item.pulse && (
                     <span className="relative flex h-2 w-2">
@@ -174,30 +167,21 @@ export default function Navbar({ activeTab, setActiveTab, dynamicMetrics, onOpen
               href={PROFESSOR_PROFILE.youtube || "https://www.youtube.com/@farooktechtricks"}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center space-x-1 px-2 xl:px-2.5 py-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-bold transition-all cursor-pointer whitespace-nowrap shadow-2xs"
+              className="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-bold transition-all cursor-pointer whitespace-nowrap shadow-2xs"
               title="Visit Dr. Farooq's YouTube Channel: Farook Tech Tricks (@farooktechtricks)"
             >
               <YoutubeIcon className="w-3.5 h-3.5 text-red-600 shrink-0" />
-              <span className="hidden xl:inline">YouTube</span>
+              <span>YouTube</span>
             </a>
 
             {/* 1-Click Academic CV Button */}
             <button
               onClick={onOpenCV}
-              className="flex items-center space-x-1.5 px-2.5 xl:px-3 py-1.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs font-bold transition-all cursor-pointer whitespace-nowrap shadow-2xs"
+              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs font-bold transition-all cursor-pointer whitespace-nowrap shadow-2xs"
               title="Generate & Download 1-Click Academic CV (PDF)"
             >
               <FileText className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
-              <span><span className="hidden xl:inline">Academic </span>CV</span>
-            </button>
-
-            {/* Quick AI CTA */}
-            <button
-              onClick={() => setActiveTab('ai-tutor')}
-              className="flex items-center space-x-1.5 px-2.5 xl:px-3 py-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-extrabold shadow-sm transition-all transform hover:-translate-y-0.5 cursor-pointer whitespace-nowrap shrink-0"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-yellow-300 shrink-0" />
-              <span>Ask AI</span>
+              <span>Academic CV</span>
             </button>
           </div>
 
