@@ -101,7 +101,13 @@ export default function AcademicCVModal({ isOpen, onClose, dynamicMetrics, publi
     : FDP_TRAINING_DATA;
 
   const handlePrint = () => {
+    const originalTitle = document.title;
+    // Set official clean title for PDF file naming and clean print header
+    document.title = 'Curriculum_Vitae_Dr_S_Md_Farooq';
     window.print();
+    setTimeout(() => {
+      document.title = originalTitle;
+    }, 1500);
   };
 
   const currentDateFormatted = new Intl.DateTimeFormat('en-IN', {
@@ -357,6 +363,16 @@ export default function AcademicCVModal({ isOpen, onClose, dynamicMetrics, publi
           </div>
         </div>
 
+        {/* Browser Print Settings Tip Banner (Visible on screen only) */}
+        <div className="print-hide no-print bg-slate-800/95 border-b border-slate-700/80 px-4 sm:px-6 py-2 flex items-center justify-between text-xs text-slate-300">
+          <div className="flex items-center space-x-2">
+            <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-cyan-400/20 text-cyan-300 font-bold text-[10px]">ℹ</span>
+            <span>
+              <strong>Clean Print / PDF Tip:</strong> In your browser print window, click <strong>More settings</strong> and <strong>uncheck &quot;Headers and footers&quot;</strong> to remove the browser date, page URL, and website title.
+            </span>
+          </div>
+        </div>
+
         {/* Scrollable Printable Document Viewport */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-10 bg-slate-100/70 modal-scroll-print">
           
@@ -368,10 +384,6 @@ export default function AcademicCVModal({ isOpen, onClose, dynamicMetrics, publi
             }`}
             style={{ lineHeight: '1.65' }}
           >
-            
-            {/* TOP ACADEMIC ACCENT BAR */}
-            <div className="h-1.5 w-full bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 mb-6 avoid-break" />
-
             {/* 1. ACADEMIC LETTERHEAD / INSTITUTIONAL HEADER */}
             <header className="border-b-2 border-slate-900 pb-5 mb-6 text-center sm:text-left flex flex-col sm:flex-row items-start justify-between gap-4 avoid-break cv-header-row">
               <div className="flex-1 min-w-0 cv-header-left">
