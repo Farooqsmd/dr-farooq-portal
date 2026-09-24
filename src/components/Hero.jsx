@@ -8,12 +8,13 @@ import {
   Sparkles, 
   FileText, 
   Award, 
-  ArrowRight,
-  ShieldCheck,
-  BookOpen,
-  Lightbulb,
-  FolderDown
+  ArrowRight, 
+  ShieldCheck, 
+  BookOpen, 
+  Lightbulb, 
+  FolderDown 
 } from 'lucide-react';
+import YoutubeIcon from './icons/YoutubeIcon';
 import { PROFESSOR_PROFILE } from '../data/profileData';
 
 const iconMap = {
@@ -21,7 +22,8 @@ const iconMap = {
   Cpu,
   Database,
   IdCard,
-  Share2
+  Share2,
+  Youtube: YoutubeIcon
 };
 
 export default function Hero({ setActiveTab, dynamicMetrics, onOpenCV }) {
@@ -244,7 +246,7 @@ export default function Hero({ setActiveTab, dynamicMetrics, onOpenCV }) {
             Verified Research & Academic Profiles
           </p>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 max-w-5xl mx-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 max-w-6xl mx-auto">
             {PROFESSOR_PROFILE.researchProfiles.map((prof) => {
               const Icon = iconMap[prof.icon] || Cpu;
               return (

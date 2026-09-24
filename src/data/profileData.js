@@ -582,6 +582,8 @@ export const PROFESSOR_PROFILE = {
   email: "farooq.cse@srecnandyal.edu.in",
   alternateEmail: "farook.1201@gmail.com",
   collegeAddress: "NH-40, Nerawada, Nandyal, Andhra Pradesh - 518501",
+  youtube: "https://www.youtube.com/@farooktechtricks",
+  youtubeHandle: "@farooktechtricks",
   
   bio: [
     "Dr. S. Md. Farooq is serving as the Head of the Department of Computer Science and Engineering (CSE) at Santhiram Engineering College (Autonomous), Nandyal. With extensive academic, teaching, research, and administrative experience, he plays a key role in strengthening the department's academic standards, research culture, industry interaction, and student development initiatives.",
@@ -652,6 +654,13 @@ export const PROFESSOR_PROFILE = {
       icon: "Share2",
       color: "from-teal-600 to-green-600",
       tag: "Sunar_Farooq"
+    },
+    {
+      name: "YouTube",
+      url: "https://www.youtube.com/@farooktechtricks",
+      icon: "Youtube",
+      color: "from-red-600 to-rose-600",
+      tag: "@farooktechtricks"
     }
   ],
 

@@ -9,6 +9,7 @@ import ResearchHub from './components/ResearchHub';
 import Footer from './components/Footer';
 import AcademicCVModal from './components/AcademicCVModal';
 import MaterialsVault from './components/MaterialsVault';
+import ScrollToTop from './components/ScrollToTop';
 import { useResearchSync } from './services/researchSyncService';
 
 export default function App() {
@@ -101,6 +102,9 @@ export default function App() {
         dynamicMetrics={metrics}
         publications={researchSync.publications}
       />
+
+      {/* Floating Scroll to Top Button */}
+      <ScrollToTop />
 
     </div>
   );

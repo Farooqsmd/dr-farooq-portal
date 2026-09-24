@@ -27,6 +27,7 @@ import {
   X,
   Compass
 } from 'lucide-react';
+import YoutubeIcon from './icons/YoutubeIcon';
 import { 
   PROFESSOR_PROFILE, 
   SUPERVISOR_DATA, 
@@ -138,6 +139,16 @@ export default function AboutSection({ setActiveTab, onOpenCV }) {
       snippet: '16+ years academic stewardship, autonomous curriculum formulation (R23 & R26), NBA & NAAC accreditation leadership.',
       targetId: 'about-bio',
       badge: 'Leadership'
+    });
+
+    // YouTube Channel
+    items.push({
+      category: 'Educational Outreach & Media',
+      title: 'Farook Tech Tricks — Official YouTube Channel',
+      subtitle: '@farooktechtricks • Technical Tutorials, Engineering Insights & AI Tools',
+      snippet: 'Official YouTube channel of Dr. S. Md. Farooq featuring educational videos, tech tricks, engineering guidance, and AI tools for students and faculty.',
+      targetId: 'about-bio',
+      badge: 'YouTube'
     });
 
     // 2. Doctoral Supervision
@@ -269,13 +280,14 @@ export default function AboutSection({ setActiveTab, onOpenCV }) {
   return (
     <div className="py-6 sm:py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-10 sm:space-y-14">
       
-      {/* 1. Sticky Quick-Jump Navigation Bar */}
-      <div className="sticky top-16 sm:top-18 z-40 bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-xs rounded-2xl px-3 py-2 flex items-center justify-between gap-3 overflow-x-auto print-hide">
-        <div className="flex items-center space-x-1.5 shrink-0 pl-1">
-          <Compass className="w-4 h-4 text-indigo-600 shrink-0" />
-          <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 mr-1 hidden sm:inline">Jump To:</span>
-        </div>
-        <div className="flex items-center space-x-1.5 shrink-0 overflow-x-auto">
+      {/* 1. Quick-Jump Navigation Bar - Clean multi-line wrapping (no horizontal scrolling) */}
+      <div className="sticky top-16 sm:top-18 z-40 bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-xs rounded-2xl p-2.5 sm:p-3 print-hide">
+        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+          <div className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700 font-bold text-xs select-none">
+            <Compass className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
+            <span>Jump To:</span>
+          </div>
+
           {[
             { id: 'about-bio', label: 'Biography', icon: '👤' },
             { id: 'executive-directory', label: 'Directory', icon: '⚡' },
@@ -291,10 +303,10 @@ export default function AboutSection({ setActiveTab, onOpenCV }) {
             <button
               key={sec.id}
               onClick={() => scrollToSection(sec.id)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer flex items-center space-x-1.5 ${
+              className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer flex items-center space-x-1.5 ${
                 activeSection === sec.id
-                  ? 'bg-slate-900 text-white font-bold shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                  ? 'bg-slate-900 text-white font-bold shadow-2xs'
+                  : 'text-slate-600 hover:text-slate-900 bg-slate-50 hover:bg-slate-100 border border-slate-200/70'
               }`}
             >
               <span>{sec.icon}</span>
@@ -442,6 +454,18 @@ export default function AboutSection({ setActiveTab, onOpenCV }) {
                       <span>Generate Academic CV</span>
                     </button>
                   )}
+
+                  {/* Official YouTube Channel CTA */}
+                  <a
+                    href={PROFESSOR_PROFILE.youtube || "https://www.youtube.com/@farooktechtricks"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full mt-2 py-2 px-3 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white text-xs font-bold flex items-center justify-center space-x-1.5 shadow-sm transition-all cursor-pointer"
+                    title="Watch Dr. Farooq's technical tutorials & engineering guides on YouTube"
+                  >
+                    <YoutubeIcon className="w-3.5 h-3.5" />
+                    <span>Farook Tech Tricks (YouTube)</span>
+                  </a>
                 </div>
               </div>
             </div>

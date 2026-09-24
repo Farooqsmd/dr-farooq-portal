@@ -17,6 +17,7 @@ import {
   FileCode,
   SlidersHorizontal
 } from 'lucide-react';
+import YoutubeIcon from './icons/YoutubeIcon';
 import { 
   fetchDriveMaterials, 
   GOOGLE_DRIVE_FOLDER_URL, 
@@ -122,7 +123,7 @@ export default function MaterialsVault({ onSelectSubjectForTutor }) {
               <strong className="text-white font-semibold">Dr. S. Md. Farooq</strong>. Connected live with Google Drive for real-time document synchronization.
             </p>
 
-            {/* Live Sync Indicator */}
+            {/* Live Sync Indicator & Video Lectures Link */}
             <div className="flex flex-wrap items-center gap-3 pt-2">
               <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-lg bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 text-xs font-medium">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
@@ -130,6 +131,16 @@ export default function MaterialsVault({ onSelectSubjectForTutor }) {
                 <span className="text-emerald-400/60">({materials.length} Documents)</span>
               </div>
 
+              <a
+                href="https://www.youtube.com/@farooktechtricks"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-lg bg-red-950/60 hover:bg-red-900/80 border border-red-500/40 text-xs font-medium text-red-200 transition-colors"
+                title="Watch Video Lectures & Tech Tutorials by Dr. Farooq"
+              >
+                <YoutubeIcon className="w-3.5 h-3.5 text-red-400" />
+                <span>Video Lectures (@farooktechtricks)</span>
+              </a>
 
               <button
                 onClick={() => loadMaterials(true)}

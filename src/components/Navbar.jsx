@@ -13,6 +13,7 @@ import {
   ChevronDown,
   FolderDown
 } from 'lucide-react';
+import YoutubeIcon from './icons/YoutubeIcon';
 import { PROFESSOR_PROFILE } from '../data/profileData';
 
 export default function Navbar({ activeTab, setActiveTab, dynamicMetrics, onOpenCV }) {
@@ -161,6 +162,18 @@ export default function Navbar({ activeTab, setActiveTab, dynamicMetrics, onOpen
               )}
             </div>
 
+            {/* YouTube Channel Button */}
+            <a
+              href={PROFESSOR_PROFILE.youtube || "https://www.youtube.com/@farooktechtricks"}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-bold transition-all cursor-pointer whitespace-nowrap shadow-2xs"
+              title="Visit Dr. Farooq's YouTube Channel: Farook Tech Tricks (@farooktechtricks)"
+            >
+              <YoutubeIcon className="w-3.5 h-3.5 text-red-600" />
+              <span className="hidden xl:inline">YouTube</span>
+            </a>
+
             {/* 1-Click Academic CV Button */}
             <button
               onClick={onOpenCV}
@@ -233,13 +246,24 @@ export default function Navbar({ activeTab, setActiveTab, dynamicMetrics, onOpen
             );
           })}
 
+          {/* Mobile YouTube Channel Button */}
+          <a
+            href={PROFESSOR_PROFILE.youtube || "https://www.youtube.com/@farooktechtricks"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full flex items-center justify-center space-x-2 px-3.5 py-2.5 rounded-xl text-sm font-bold bg-gradient-to-r from-red-50 to-rose-50 text-red-700 border border-red-200 shadow-2xs hover:bg-red-100 transition-all cursor-pointer mb-2"
+          >
+            <YoutubeIcon className="w-4 h-4 text-red-600" />
+            <span>YouTube: Farook Tech Tricks</span>
+          </a>
+
           {/* Mobile 1-Click Academic CV Button */}
           <button
             onClick={() => {
               if (onOpenCV) onOpenCV();
               setMobileMenuOpen(false);
             }}
-            className="w-full flex items-center justify-center space-x-2 px-3.5 py-2.5 rounded-xl text-sm font-bold bg-gradient-to-r from-indigo-50 to-blue-50 text-indigo-700 border border-indigo-200 shadow-2xs hover:bg-indigo-100 transition-all cursor-pointer my-2"
+            className="w-full flex items-center justify-center space-x-2 px-3.5 py-2.5 rounded-xl text-sm font-bold bg-gradient-to-r from-indigo-50 to-blue-50 text-indigo-700 border border-indigo-200 shadow-2xs hover:bg-indigo-100 transition-all cursor-pointer mb-2"
           >
             <FileText className="w-4 h-4 text-indigo-600" />
             <span>Download Official Academic CV</span>
