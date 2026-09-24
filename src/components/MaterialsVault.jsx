@@ -16,8 +16,7 @@ import {
   AlertCircle,
   HelpCircle,
   FileCode,
-  SlidersHorizontal,
-  FolderOpen
+  SlidersHorizontal
 } from 'lucide-react';
 import { 
   fetchDriveMaterials, 
@@ -133,16 +132,6 @@ export default function MaterialsVault({ onSelectSubjectForTutor }) {
                 <span className="text-emerald-400/60">({materials.length} Documents)</span>
               </div>
 
-              <a
-                href={GOOGLE_DRIVE_FOLDER_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 text-xs font-medium text-white transition-colors"
-              >
-                <FolderOpen className="w-3.5 h-3.5 text-amber-300" />
-                <span>Open in Google Drive</span>
-                <ExternalLink className="w-3 h-3 text-slate-300" />
-              </a>
 
               <button
                 onClick={() => loadMaterials(true)}
@@ -298,20 +287,20 @@ export default function MaterialsVault({ onSelectSubjectForTutor }) {
           </div>
         </div>
 
-        {/* Category Pills */}
-        <div className="flex items-center space-x-2 overflow-x-auto pb-1 scrollbar-none text-xs">
-          <span className="text-slate-400 font-medium pl-1 flex items-center space-x-1 shrink-0">
-            <Filter className="w-3.5 h-3.5" />
+        {/* Category & Subject Pills - Wraps to next line when frame width is reached */}
+        <div className="flex flex-wrap items-center gap-2 pt-1 text-xs">
+          <span className="text-slate-500 font-bold pl-1 flex items-center space-x-1.5 shrink-0 py-1">
+            <Filter className="w-3.5 h-3.5 text-indigo-500" />
             <span>Category:</span>
           </span>
           {availableCategories.map(cat => (
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-3 py-1.5 rounded-xl whitespace-nowrap transition-all font-semibold ${
+              className={`px-3 py-1.5 rounded-xl transition-all font-semibold cursor-pointer ${
                 selectedCategory === cat
-                  ? 'bg-indigo-600 text-white shadow-2xs'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200/80 hover:text-slate-900'
+                  ? 'bg-indigo-600 text-white shadow-2xs font-bold'
+                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200/80 hover:text-slate-900 border border-slate-200/60'
               }`}
             >
               {cat}
