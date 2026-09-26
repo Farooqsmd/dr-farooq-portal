@@ -333,10 +333,12 @@ export const PUBLICATIONS_DATA = [
     "citations": 25,
     "type": "Journal",
     "tags": [
-      "Google Scholar Verified",
+      "Scopus Indexed",
+      "Inderscience (Scopus)",
       "Journal"
     ],
     "sources": [
+      "Scopus",
       "Google Scholar"
     ],
     "doi": "10.1504/WRSTSD.2018.092820",
@@ -405,15 +407,17 @@ export const PUBLICATIONS_DATA = [
   {
     "title": "A comprehensive research on video imaging techniques",
     "authors": "FS Mahammad, K Balasubramanian, TS Babu",
-    "venue": "All Open Access, Bronze, 2019",
+    "venue": "International Journal of Innovative Technology and Exploring Engineering (IJITEE), 2019",
     "year": "2019",
     "citations": 16,
     "type": "Journal",
     "tags": [
-      "Google Scholar Verified",
+      "Scopus Indexed",
+      "IJITEE (Scopus)",
       "Journal"
     ],
     "sources": [
+      "Scopus",
       "Google Scholar"
     ],
     "doi": "10.35940/ijitee.F1320.0486S419",
@@ -1344,17 +1348,20 @@ export const PUBLICATIONS_DATA = [
     "id": "pub-57"
   },
   {
-    "title": "39 Optimization of Power Loss Mitigation in Distribution Systems Using Hunter-Prey Optimization Algorithm for Multiple Types of DFACTS",
+    "title": "Optimization of Power Loss Mitigation in Distribution Systems Using Hunter-Prey Optimization Algorithm for Multiple Types of DFACTS",
     "authors": "M Thirumalai, M Ulagammai, TD Suresh, FSM John De Britto, C",
-    "venue": "Power Energy and Secure Smart Technologies, 34, 2025",
+    "venue": "Power Energy and Secure Smart Technologies, 290-297, 2025",
     "year": "2025",
     "citations": 0,
     "type": "Book Chapter",
     "tags": [
-      "Google Scholar Verified",
+      "Scopus Indexed",
+      "CRC Press / Taylor & Francis",
       "Book Chapter"
     ],
     "sources": [
+      "Scopus",
+      "CRC Press / Taylor & Francis",
       "Google Scholar"
     ],
     "doi": "10.1201/9781003661917-39",
@@ -1369,10 +1376,13 @@ export const PUBLICATIONS_DATA = [
     "citations": 0,
     "type": "Book Chapter",
     "tags": [
-      "Google Scholar Verified",
+      "Scopus Indexed",
+      "CRC Press / Taylor & Francis",
       "Book Chapter"
     ],
     "sources": [
+      "Scopus",
+      "CRC Press / Taylor & Francis",
       "Google Scholar"
     ],
     "doi": "10.1201/9781003661917-51",
@@ -1579,14 +1589,12 @@ export const PUBLICATIONS_DATA = [
     "type": "Conference",
     "doi": "10.1109/icesc70182.2026.11686925",
     "sources": [
-      "Scopus",
       "IEEE Xplore",
       "Google Scholar"
     ],
     "url": "https://doi.org/10.1109/icesc70182.2026.11686925",
     "tags": [
       "IEEE Xplore",
-      "Scopus Indexed",
       "AI / ML"
     ]
   },
@@ -1600,14 +1608,12 @@ export const PUBLICATIONS_DATA = [
     "type": "Conference",
     "doi": "10.1109/cmss69636.2026.11689499",
     "sources": [
-      "Scopus",
       "IEEE Xplore",
       "Google Scholar"
     ],
     "url": "https://doi.org/10.1109/cmss69636.2026.11689499",
     "tags": [
       "IEEE Xplore",
-      "Scopus Indexed",
       "AI / ML"
     ]
   },
@@ -1621,14 +1627,12 @@ export const PUBLICATIONS_DATA = [
     "type": "Conference",
     "doi": "10.1109/iccvbic71195.2026.11689341",
     "sources": [
-      "Scopus",
       "IEEE Xplore",
       "Google Scholar"
     ],
     "url": "https://doi.org/10.1109/iccvbic71195.2026.11689341",
     "tags": [
       "IEEE Xplore",
-      "Scopus Indexed",
       "AI / ML"
     ]
   },
@@ -1642,14 +1646,12 @@ export const PUBLICATIONS_DATA = [
     "type": "Conference",
     "doi": "10.1109/iccvbic71195.2026.11689024",
     "sources": [
-      "Scopus",
       "IEEE Xplore",
       "Google Scholar"
     ],
     "url": "https://doi.org/10.1109/iccvbic71195.2026.11689024",
     "tags": [
       "IEEE Xplore",
-      "Scopus Indexed",
       "AI / ML"
     ]
   }

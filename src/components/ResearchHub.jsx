@@ -59,7 +59,8 @@ export default function ResearchHub({ setActiveTab, dynamicState, onOpenCV }) {
   // Counts for each category
   const counts = useMemo(() => {
     const ieeeCount = allPublications.filter(p => (p.sources || []).includes('IEEE Xplore')).length;
-    const scopusCount = allPublications.filter(p => (p.sources || []).includes('Scopus')).length;
+    const scopusList = allPublications.filter(p => (p.sources || []).includes('Scopus'));
+    const scopusCount = m.scopusPublicationsCount ? Number(m.scopusPublicationsCount) : Math.min(41, scopusList.length);
     const scopusJournalsCount = allPublications.filter(p => (p.sources || []).includes('Scopus') && !(p.sources || []).includes('IEEE Xplore')).length;
     const awardsCount = (PROFESSOR_PROFILE.awards || []).length;
     const patentsCount = PATENTS_DATA.length; // strictly 12
@@ -74,7 +75,7 @@ export default function ResearchHub({ setActiveTab, dynamicState, onOpenCV }) {
       grants: grantsCount,
       awards: awardsCount
     };
-  }, [allPublications]);
+  }, [allPublications, m]);
 
   // Unique domain tags
   const domainTags = useMemo(() => {
@@ -659,7 +660,7 @@ export default function ResearchHub({ setActiveTab, dynamicState, onOpenCV }) {
                   {activeCategory === 'ieee' 
                     ? `IEEE Conference Publications (${filteredPublications.length} Indexed in Scopus & IEEE Xplore)`
                     : activeCategory === 'scopus'
-                    ? `Scopus Indexed Publications (${filteredPublications.length} Documents • 27 IEEE + 9 AIP + 2 SCI Journals + 3 Chapters)`
+                    ? `Scopus Indexed Publications (${filteredPublications.length} Documents • 23 IEEE + 9 AIP + 3 CRC Press + 2 SCI Journals + 4 Others)`
                     : activeCategory === 'scopus-journals'
                     ? `Other Scopus Indexed Works (${filteredPublications.length} Documents • AIP Proceedings, SCI Journals & Book Chapters)`
                     : `Peer-Reviewed Publications (${m.scopusDisplay || '41'} Scopus Indexed • ${m.publicationsDisplay || '47+'} Google Scholar Verified)`}
