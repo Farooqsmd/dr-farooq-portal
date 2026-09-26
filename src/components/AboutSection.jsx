@@ -151,6 +151,16 @@ export default function AboutSection({ setActiveTab, onOpenCV }) {
       badge: 'YouTube'
     });
 
+    // VIDWAN ID
+    items.push({
+      category: 'National Researcher Index',
+      title: 'VIDWAN Expert Database (INFLIBNET / MoE)',
+      subtitle: 'VIDWAN ID: 169875 • National Researcher Network, Govt. of India',
+      snippet: 'Officially verified researcher profile on VIDWAN (INFLIBNET Centre, Inter-University Centre of UGC, Ministry of Education, Govt. of India). Expert ID: 169875.',
+      targetId: 'about-bio',
+      badge: 'ID: 169875'
+    });
+
     // 2. Doctoral Supervision
     SUPERVISOR_DATA.forEach(s => {
       items.push({
@@ -444,6 +454,18 @@ export default function AboutSection({ setActiveTab, onOpenCV }) {
                   <div className="text-xs text-indigo-600 font-semibold mt-0.5">Ph.D. (VIT) • HOD, CSE</div>
                   <div className="text-[11px] text-slate-500 mt-0.5">Chairperson, Board of Studies (BOS)</div>
                   <div className="text-[11px] text-emerald-700 font-semibold mt-0.5">Ph.D. Supervisor: JNTUA & Annamacharya</div>
+                  <div className="text-[11px] text-amber-800 font-bold mt-0.5">
+                    <a 
+                      href={PROFESSOR_PROFILE.vidwanUrl || "https://vidwan.inflibnet.ac.in/profile/169875"} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="hover:underline inline-flex items-center space-x-1"
+                      title="Inspect Official Profile on VIDWAN (INFLIBNET / MoE, Govt. of India)"
+                    >
+                      <span>VIDWAN ID: 169875 (INFLIBNET)</span>
+                      <ExternalLink className="w-2.5 h-2.5 inline text-amber-600" />
+                    </a>
+                  </div>
                   {onOpenCV && (
                     <button
                       onClick={onOpenCV}

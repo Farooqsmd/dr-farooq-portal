@@ -126,7 +126,7 @@ export default function AcademicCVModal({ isOpen, onClose, dynamicMetrics, publi
     text += `Santhiram Engineering College (Autonomous), Nandyal, Andhra Pradesh, India\n`;
     text += `Official Email: ${PROFESSOR_PROFILE.email} | Alternate Email: ${PROFESSOR_PROFILE.alternateEmail || 'farook.1201@gmail.com'}\n`;
     text += `Scopus Author ID: 57202806468 | IEEE Author ID: 990518851303926\n`;
-    text += `ORCID ID: 0000-0003-0936-1980 | Google Scholar: wmHlQRMAAAAJ\n`;
+    text += `ORCID ID: 0000-0003-0936-1980 | VIDWAN ID: 169875 | Google Scholar: wmHlQRMAAAAJ\n`;
     text += `========================================================================\n\n`;
 
     text += `I. EXECUTIVE PROFILE & LEADERSHIP STATEMENT\n`;
@@ -431,6 +431,7 @@ export default function AcademicCVModal({ isOpen, onClose, dynamicMetrics, publi
                 <div><span className="font-bold text-slate-950">Scopus ID:</span> 57202806468 (39 Docs)</div>
                 <div><span className="font-bold text-slate-950">IEEE Author ID:</span> 990518851303926</div>
                 <div><span className="font-bold text-slate-950">ORCID ID:</span> 0000-0003-0936-1980</div>
+                <div><span className="font-bold text-slate-950">VIDWAN ID:</span> 169875 (INFLIBNET)</div>
                 <div><span className="font-bold text-slate-950">Google Scholar:</span> wmHlQRMAAAAJ (393+ Cits)</div>
               </div>
             </header>

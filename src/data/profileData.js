@@ -1,6 +1,6 @@
 // Complete Academic, Governance & Scholarly Profile of Dr. S. Md. Farooq
 // Head of Department - Computer Science and Engineering, Santhiram Engineering College (Autonomous)
-// Synchronized with Scopus Author ID 57202806468, IEEE Author ID 990518851303926, ORCID 0000-0003-0936-1980
+// Synchronized with Scopus Author ID 57202806468, IEEE Author ID 990518851303926, ORCID 0000-0003-0936-1980, VIDWAN ID 169875
 
 export const SUPERVISOR_DATA = [
   {
@@ -584,6 +584,8 @@ export const PROFESSOR_PROFILE = {
   collegeAddress: "NH-40, Nerawada, Nandyal, Andhra Pradesh - 518501",
   youtube: "https://www.youtube.com/@farooktechtricks",
   youtubeHandle: "@farooktechtricks",
+  vidwanId: "169875",
+  vidwanUrl: "https://vidwan.inflibnet.ac.in/profile/169875",
   
   bio: [
     "Dr. S. Md. Farooq is serving as the Head of the Department of Computer Science and Engineering (CSE) at Santhiram Engineering College (Autonomous), Nandyal. With extensive academic, teaching, research, and administrative experience, he plays a key role in strengthening the department's academic standards, research culture, industry interaction, and student development initiatives.",
@@ -647,6 +649,13 @@ export const PROFESSOR_PROFILE = {
       icon: "IdCard",
       color: "from-emerald-600 to-teal-600",
       tag: "0000-0003-0936-1980"
+    },
+    {
+      name: "VIDWAN",
+      url: "https://vidwan.inflibnet.ac.in/profile/169875",
+      icon: "Award",
+      color: "from-amber-600 to-orange-600",
+      tag: "ID: 169875 (INFLIBNET)"
     },
     {
       name: "ResearchGate",

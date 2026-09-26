@@ -23,7 +23,8 @@ const iconMap = {
   Database,
   IdCard,
   Share2,
-  Youtube: YoutubeIcon
+  Youtube: YoutubeIcon,
+  Award
 };
 
 export default function Hero({ setActiveTab, dynamicMetrics, onOpenCV }) {
@@ -87,6 +88,16 @@ export default function Hero({ setActiveTab, dynamicMetrics, onOpenCV }) {
             <ShieldCheck className="w-4 h-4 text-emerald-400" />
             <span>12 Professional Memberships (IEEE • ISTE Life • CSI • WRU • IAENG)</span>
           </div>
+          <a
+            href={PROFESSOR_PROFILE.vidwanUrl || "https://vidwan.inflibnet.ac.in/profile/169875"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-orange-950/60 hover:bg-orange-900/70 border border-orange-400/40 text-orange-300 text-xs font-semibold backdrop-blur-md transition-colors"
+            title="Inspect Dr. Farooq's Official Expert Profile on VIDWAN (INFLIBNET / Ministry of Education, Govt. of India)"
+          >
+            <ShieldCheck className="w-4 h-4 text-orange-400" />
+            <span>VIDWAN ID: 169875 (INFLIBNET)</span>
+          </a>
         </div>
 
         {/* Hero Main Header with Dr. Farooq Portrait & Credentials */}
@@ -246,7 +257,7 @@ export default function Hero({ setActiveTab, dynamicMetrics, onOpenCV }) {
             Verified Research & Academic Profiles
           </p>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 max-w-6xl mx-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3 max-w-7xl mx-auto">
             {PROFESSOR_PROFILE.researchProfiles.map((prof) => {
               const Icon = iconMap[prof.icon] || Cpu;
               return (
