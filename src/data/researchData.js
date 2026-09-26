@@ -1,12 +1,12 @@
 // Verified Research Publications & Patents Repository for Dr. S. Md. Farooq
 // Updated with official record from 'Farooq Patetnts.xlsx' (Department of CSE, Santhiram Engineering College)
-// Synced with Scopus (39 Patents Portfolio), Google Scholar (47+ Publications, 390+ Citations), and ORCID (0000-0003-0936-1980)
+// Synced with Scopus (41 Scopus Indexed Publications), Google Scholar (47+ Publications, 390+ Citations), and ORCID (0000-0003-0936-1980)
 
 export const RESEARCH_METRICS = {
   "publicationsCount": 74,
   "publicationsDisplay": "47+",
-  "scopusPublicationsCount": 39,
-  "scopusDisplay": "39",
+  "scopusPublicationsCount": 41,
+  "scopusDisplay": "41",
   "ieeeCount": 27,
   "ieeeDisplay": "27",
   "totalCitations": 393,
@@ -665,17 +665,20 @@ export const PUBLICATIONS_DATA = [
     "id": "pub-23"
   },
   {
-    "title": "40 Optimal Placement of Renewable Based DG and DSTATCOM in Distribution Systems to Alleviate the Effects of EVCS",
+    "title": "Optimal Placement of Renewable Based DG and DSTATCOM in Distribution Systems to Alleviate the Effects of EVCS",
     "authors": "TD Suresh, M Thirumalai, M Ulagammai, FSM Hemalatha, R",
-    "venue": "Power Energy and Secure Smart Technologies, 40, 2025",
+    "venue": "Power Energy and Secure Smart Technologies, CRC Press / Taylor & Francis Group, 2025",
     "year": "2025",
     "citations": 2,
     "type": "Book Chapter",
     "tags": [
-      "Google Scholar Verified",
-      "Book Chapter"
+      "Scopus Indexed",
+      "CRC Press / Taylor & Francis",
+      "Energy Systems"
     ],
     "sources": [
+      "Scopus",
+      "CRC Press / Taylor & Francis",
       "Google Scholar"
     ],
     "doi": "10.1201/9781003661917-40",
@@ -1271,15 +1274,18 @@ export const PUBLICATIONS_DATA = [
   {
     "title": "Unified Intelligence for Strategic Business Transformation Through Cross-Functional Integration of AI and Predictive Analytics",
     "authors": "O Bhaskaru, K Lalitha, FS Mahammad, NB Tajudin",
-    "venue": "Harnessing AI and Predictive Analytics for Decision-Making and Competitive …, 2026",
+    "venue": "Advances in Computational Intelligence and Robotics (ACIR) Book Series, IGI Global, 2026",
     "year": "2026",
     "citations": 0,
-    "type": "Journal",
+    "type": "Book Chapter",
     "tags": [
-      "Google Scholar Verified",
-      "Journal"
+      "Scopus Indexed",
+      "IGI Global",
+      "AI & Business Analytics"
     ],
     "sources": [
+      "Scopus",
+      "IGI Global",
       "Google Scholar"
     ],
     "doi": "10.4018/979-8-3373-3648-0.ch013",

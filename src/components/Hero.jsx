@@ -30,7 +30,7 @@ const iconMap = {
 export default function Hero({ setActiveTab, dynamicMetrics, onOpenCV }) {
   const m = dynamicMetrics || PROFESSOR_PROFILE.metrics || {
     publicationsDisplay: "47+",
-    scopusDisplay: "39",
+    scopusDisplay: "41",
     ieeeDisplay: "27",
     patentsDisplay: "12",
     totalCitations: 393,
@@ -70,7 +70,7 @@ export default function Hero({ setActiveTab, dynamicMetrics, onOpenCV }) {
           </div>
           <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-cyan-950/60 border border-cyan-400/30 text-cyan-300 text-xs font-semibold backdrop-blur-md">
             <BookOpen className="w-4 h-4 text-cyan-400" />
-            <span>{m.scopusDisplay || '39'} Scopus ({m.ieeeDisplay || '27'} IEEE) & {m.publicationsDisplay || '47+'} Scholar</span>
+            <span>{m.scopusDisplay || '41'} Scopus ({m.ieeeDisplay || '27'} IEEE) & {m.publicationsDisplay || '47+'} Scholar</span>
           </div>
           <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-teal-950/60 border border-teal-400/30 text-teal-300 text-xs font-semibold backdrop-blur-md">
             <BookOpen className="w-4 h-4 text-teal-400" />
@@ -123,7 +123,7 @@ export default function Hero({ setActiveTab, dynamicMetrics, onOpenCV }) {
             </p>
 
             <p className="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto lg:mx-0 mb-8 leading-relaxed">
-              Committed to building a student-centric, outcome-based engineering education ecosystem. Championing autonomous curriculum innovation (R23 & AI-integrated R26), high-impact research across {m.patentsDisplay || '12'} patents & {m.scopusDisplay || '39'} Scopus publications ({m.ieeeDisplay || '27'} IEEE conferences), and interactive AI learning for students.
+              Committed to building a student-centric, outcome-based engineering education ecosystem. Championing autonomous curriculum innovation (R23 & AI-integrated R26), high-impact research across {m.patentsDisplay || '12'} patents & {m.scopusDisplay || '41'} Scopus publications ({m.ieeeDisplay || '27'} IEEE conferences), and interactive AI learning for students.
             </p>
 
             {/* Primary Quick CTA Buttons */}
@@ -294,13 +294,13 @@ export default function Hero({ setActiveTab, dynamicMetrics, onOpenCV }) {
             className="p-4 rounded-xl bg-slate-800/40 hover:bg-slate-800/80 border border-slate-800 hover:border-cyan-500/40 backdrop-blur-xs cursor-pointer transition-all duration-200 group"
           >
             <div className="text-2xl sm:text-3xl font-extrabold text-cyan-400 group-hover:scale-105 transition-transform">
-              {m.scopusDisplay || '39'} / {m.publicationsDisplay || '47+'}
+              {m.scopusDisplay || '41'} / {m.publicationsDisplay || '47+'}
             </div>
             <div className="text-xs text-slate-200 font-bold mt-1 group-hover:text-cyan-300 transition-colors">
               Publications
             </div>
             <div className="text-[11px] text-slate-400 font-medium mt-0.5">
-              {m.scopusDisplay || '39'} Scopus ({m.ieeeDisplay || '27'} IEEE) • {m.publicationsDisplay || '47+'} Scholar
+              {m.scopusDisplay || '41'} Scopus ({m.ieeeDisplay || '27'} IEEE) • {m.publicationsDisplay || '47+'} Scholar
             </div>
           </div>
 

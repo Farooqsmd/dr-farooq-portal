@@ -6,9 +6,9 @@ const IEEE_AUTHOR_ID = "990518851303926";
 const SCOPUS_AUTHOR_ID = "57202806468";
 const SCHOLAR_USER_ID = "wmHlQRMAAAAJ";
 
-// Storage keys - v5 ensures clean exact metrics (27 IEEE, 39 Scopus)
-const STORAGE_KEY_PUBLICATIONS = "dr_farooq_synced_publications_v5";
-const STORAGE_KEY_LAST_SYNC = "dr_farooq_last_research_sync_v5";
+// Storage keys - v6 ensures clean exact metrics (27 IEEE, 41 Scopus)
+const STORAGE_KEY_PUBLICATIONS = "dr_farooq_synced_publications_v6";
+const STORAGE_KEY_LAST_SYNC = "dr_farooq_last_research_sync_v6";
 const STORAGE_KEY_SCOPUS_API_KEY = "dr_farooq_scopus_api_key";
 
 function cleanString(str) {
@@ -161,8 +161,10 @@ export async function fetchLiveOrcidPublications() {
           sources.push('Scopus', 'Springer (SCI)', 'Google Scholar');
         } else if (venue.toLowerCase().includes('wiley')) {
           sources.push('Scopus', 'Wiley', 'Google Scholar');
-        } else if (venue.toLowerCase().includes('taylor') || venue.toLowerCase().includes('crc')) {
+        } else if (venue.toLowerCase().includes('taylor') || venue.toLowerCase().includes('crc') || venue.toLowerCase().includes('power energy')) {
           sources.push('Scopus', 'CRC Press / Taylor & Francis', 'Google Scholar');
+        } else if (venue.toLowerCase().includes('igi') || venue.toLowerCase().includes('computational intelligence and robotics')) {
+          sources.push('Scopus', 'IGI Global', 'Google Scholar');
         } else {
           sources.push('Google Scholar');
         }
@@ -225,8 +227,10 @@ export async function fetchLiveOrcidPublications() {
           sources.push('Scopus', 'Springer (SCI)', 'Google Scholar');
         } else if (journal.toLowerCase().includes('wiley')) {
           sources.push('Scopus', 'Wiley', 'Google Scholar');
-        } else if (journal.toLowerCase().includes('taylor') || journal.toLowerCase().includes('crc')) {
+        } else if (journal.toLowerCase().includes('taylor') || journal.toLowerCase().includes('crc') || journal.toLowerCase().includes('power energy')) {
           sources.push('Scopus', 'CRC Press / Taylor & Francis', 'Google Scholar');
+        } else if (journal.toLowerCase().includes('igi') || journal.toLowerCase().includes('computational intelligence and robotics')) {
+          sources.push('Scopus', 'IGI Global', 'Google Scholar');
         } else {
           sources.push('Google Scholar');
         }
@@ -277,10 +281,12 @@ export function getInitialResearchData() {
       localStorage.removeItem("dr_farooq_synced_publications_v2");
       localStorage.removeItem("dr_farooq_synced_publications_v3");
       localStorage.removeItem("dr_farooq_synced_publications_v4");
+      localStorage.removeItem("dr_farooq_synced_publications_v5");
       localStorage.removeItem("dr_farooq_last_research_sync");
       localStorage.removeItem("dr_farooq_last_research_sync_v2");
       localStorage.removeItem("dr_farooq_last_research_sync_v3");
       localStorage.removeItem("dr_farooq_last_research_sync_v4");
+      localStorage.removeItem("dr_farooq_last_research_sync_v5");
     } catch (e) {}
 
     lastSync = localStorage.getItem(STORAGE_KEY_LAST_SYNC);
@@ -305,12 +311,13 @@ export function getInitialResearchData() {
  */
 export function calculateDynamicMetrics(allPublications = [], patents = PATENTS_DATA) {
   // Official verified metrics:
-  // - Exactly 39 Scopus Publications (27 IEEE conferences + 9 AIP proceedings + 2 SCI journals + 1 book chapter)
+  // - Exactly 41 Scopus Publications (27 IEEE conferences + 9 AIP proceedings + 2 SCI journals + 3 book chapters)
   // - Exactly 27 IEEE Publications on IEEE Xplore
   // - 47+ Google Scholar Publications
   // - 12 Patents (3 Granted, 9 Published)
   // - 393+ Citations (h-index: 12, i10: 13)
   const scopusList = allPublications.filter(p => (p.sources || []).includes('Scopus'));
+  const scopusCount = Math.max(41, scopusList.length);
   const ieeeCount = allPublications.filter(p => (p.sources || []).includes('IEEE Xplore')).length;
 
   const patentsCount = patents.length;
@@ -323,8 +330,8 @@ export function calculateDynamicMetrics(allPublications = [], patents = PATENTS_
   return {
     publicationsCount: 47,
     publicationsDisplay: '47+',
-    scopusPublicationsCount: 39,
-    scopusDisplay: '39',
+    scopusPublicationsCount: scopusCount,
+    scopusDisplay: `${scopusCount}`,
     ieeeCount: Math.max(27, ieeeCount),
     ieeeDisplay: `${Math.max(27, ieeeCount)}`,
     totalCitations,

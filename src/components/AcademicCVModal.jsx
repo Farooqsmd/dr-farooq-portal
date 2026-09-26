@@ -49,7 +49,7 @@ const FDP_BY_YEAR = (() => {
 export default function AcademicCVModal({ isOpen, onClose, dynamicMetrics, publications }) {
   const [cvFormat, setCvFormat] = useState('full'); // 'full' (Comprehensive CV) or 'executive' (2-Page Resume)
   const [fontFamily, setFontFamily] = useState('serif'); // 'serif' (Classic Academic) or 'sans' (Modern Executive)
-  const [pubScope, setPubScope] = useState('scopus'); // 'scopus' (39 Scopus Papers) or 'all' (All 74 Publications)
+  const [pubScope, setPubScope] = useState('scopus'); // 'scopus' (41 Scopus Papers) or 'all' (All 74 Publications)
   const [copiedText, setCopiedText] = useState(false);
   const [qrCodeUrl, setQrCodeUrl] = useState('');
 
@@ -135,7 +135,7 @@ export default function AcademicCVModal({ isOpen, onClose, dynamicMetrics, publi
 
     text += `II. ACADEMIC & RESEARCH METRICS SUMMARY\n`;
     text += `------------------------------------------------------------------------\n`;
-    text += `- Scopus Indexed Publications: 39 Documents\n`;
+    text += `- Scopus Indexed Publications: 41 Documents\n`;
     text += `- Total Scholarly Works: 74 Publications (Scopus, IEEE & Google Scholar)\n`;
     text += `- Total Research Citations: 393+ (h-index: 12, i10-index: 13)\n`;
     text += `- Intellectual Property: 12 Patents (3 Granted, 9 Published under KAPILA Scheme)\n`;
@@ -182,7 +182,7 @@ export default function AcademicCVModal({ isOpen, onClose, dynamicMetrics, publi
     });
     text += `\n`;
 
-    text += `VIII. ${pubScope === 'scopus' ? 'SCOPUS INDEXED RESEARCH PUBLICATIONS (39 DOCUMENTS)' : 'COMPLETE RESEARCH PUBLICATIONS PORTFOLIO (' + displayedPubs.length + ' DOCUMENTS)'}\n`;
+    text += `VIII. ${pubScope === 'scopus' ? 'SCOPUS INDEXED RESEARCH PUBLICATIONS (41 DOCUMENTS)' : 'COMPLETE RESEARCH PUBLICATIONS PORTFOLIO (' + displayedPubs.length + ' DOCUMENTS)'}\n`;
     text += `------------------------------------------------------------------------\n`;
     displayedPubs.forEach((p, i) => {
       text += `${i + 1}. [${p.year || '2022'}] [${p.type || 'Research Article'}] ${p.authors || 'Dr. S. Md. Farooq et al.'} "${p.title}", ${p.venue}. ${p.doi ? 'DOI: https://doi.org/' + p.doi : ''}\n`;
@@ -254,7 +254,7 @@ export default function AcademicCVModal({ isOpen, onClose, dynamicMetrics, publi
               </h2>
             </div>
             <p className="text-xs text-slate-400 mt-0.5">
-              1-Click official dossier • 39 Scopus indexed papers, 12 patents, Ph.D. Supervision, BoS & 54 FDPs
+              1-Click official dossier • 41 Scopus indexed papers, 12 patents, Ph.D. Supervision, BoS & 54 FDPs
             </p>
           </div>
 
@@ -265,16 +265,16 @@ export default function AcademicCVModal({ isOpen, onClose, dynamicMetrics, publi
               <span>Justified Typeset</span>
             </div>
 
-            {/* Publication Scope Selector: 39 Scopus vs All 74 Publications */}
+            {/* Publication Scope Selector: 41 Scopus vs All Publications */}
             <div className="flex items-center p-1 rounded-xl bg-slate-800 border border-slate-700 text-xs font-bold">
               <button
                 onClick={() => setPubScope('scopus')}
                 className={`px-3 py-1.5 rounded-lg transition-colors cursor-pointer ${
                   pubScope === 'scopus' ? 'bg-cyan-500 text-slate-950 shadow-xs' : 'text-slate-300 hover:text-white'
                 }`}
-                title="Print only the 39 Scopus Indexed publications"
+                title="Print only the 41 Scopus Indexed publications"
               >
-                Scopus Only (39)
+                Scopus Only ({scopusPubs.length || 41})
               </button>
               <button
                 onClick={() => setPubScope('all')}
@@ -428,7 +428,7 @@ export default function AcademicCVModal({ isOpen, onClose, dynamicMetrics, publi
                 <div className="text-slate-950 font-bold border-b border-slate-200 pb-1 mb-1 text-[10.5px] sm:text-[11px] uppercase tracking-wider">
                   Verified Scholarly Identifiers
                 </div>
-                <div><span className="font-bold text-slate-950">Scopus ID:</span> 57202806468 (39 Docs)</div>
+                <div><span className="font-bold text-slate-950">Scopus ID:</span> 57202806468 (41 Docs)</div>
                 <div><span className="font-bold text-slate-950">IEEE Author ID:</span> 990518851303926</div>
                 <div><span className="font-bold text-slate-950">ORCID ID:</span> 0000-0003-0936-1980</div>
                 <div><span className="font-bold text-slate-950">VIDWAN ID:</span> 169875 (INFLIBNET)</div>
@@ -453,7 +453,7 @@ export default function AcademicCVModal({ isOpen, onClose, dynamicMetrics, publi
               </h2>
               <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center text-xs">
                 <div className="border border-slate-300 p-2.5 rounded bg-slate-50/70 shadow-xs">
-                  <div className="font-black text-slate-950 text-sm sm:text-base">39 Scopus</div>
+                  <div className="font-black text-slate-950 text-sm sm:text-base">41 Scopus</div>
                   <div className="text-[10px] text-slate-700 font-semibold uppercase tracking-wider mt-0.5">Indexed Publications</div>
                 </div>
                 <div className="border border-slate-300 p-2.5 rounded bg-slate-50/70 shadow-xs">

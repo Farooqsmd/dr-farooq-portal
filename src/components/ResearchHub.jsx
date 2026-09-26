@@ -254,10 +254,10 @@ export default function ResearchHub({ setActiveTab, dynamicState, onOpenCV }) {
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 pt-4 border-t border-slate-800">
             <div className="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-3.5 backdrop-blur-xs">
               <div className="text-xl sm:text-2xl font-extrabold text-cyan-400">
-                {m.scopusDisplay || '39'} / {m.publicationsDisplay || '47+'}
+                {m.scopusDisplay || '41'} / {m.publicationsDisplay || '47+'}
               </div>
               <div className="text-xs font-bold text-slate-200 mt-1">Research Publications</div>
-              <div className="text-[10.5px] text-slate-400 mt-0.5">{m.scopusDisplay || '39'} Scopus ({m.ieeeDisplay || '27'} IEEE)</div>
+              <div className="text-[10.5px] text-slate-400 mt-0.5">{m.scopusDisplay || '41'} Scopus ({m.ieeeDisplay || '27'} IEEE)</div>
             </div>
 
             <div className="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-3.5 backdrop-blur-xs">
@@ -386,7 +386,7 @@ export default function ResearchHub({ setActiveTab, dynamicState, onOpenCV }) {
             </span>
           </button>
 
-          {/* 4. Scopus Indexed Documents (Exact 39) */}
+          {/* 4. Scopus Indexed Documents (Exact 41) */}
           <button
             onClick={() => { setActiveCategory('scopus'); setSelectedTag('All'); }}
             className={`flex items-center space-x-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-150 cursor-pointer ${
@@ -659,14 +659,14 @@ export default function ResearchHub({ setActiveTab, dynamicState, onOpenCV }) {
                   {activeCategory === 'ieee' 
                     ? `IEEE Conference Publications (${filteredPublications.length} Indexed in Scopus & IEEE Xplore)`
                     : activeCategory === 'scopus'
-                    ? `Scopus Indexed Publications (${filteredPublications.length} Documents • 27 IEEE + 9 AIP + 2 SCI Journals + 1 Chapter)`
+                    ? `Scopus Indexed Publications (${filteredPublications.length} Documents • 27 IEEE + 9 AIP + 2 SCI Journals + 3 Chapters)`
                     : activeCategory === 'scopus-journals'
-                    ? `Other Scopus Indexed Works (${filteredPublications.length} Documents • AIP Proceedings, SCI Journals & Book Chapter)`
-                    : `Peer-Reviewed Publications (${m.scopusDisplay || '39'} Scopus Indexed • ${m.publicationsDisplay || '47+'} Google Scholar Verified)`}
+                    ? `Other Scopus Indexed Works (${filteredPublications.length} Documents • AIP Proceedings, SCI Journals & Book Chapters)`
+                    : `Peer-Reviewed Publications (${m.scopusDisplay || '41'} Scopus Indexed • ${m.publicationsDisplay || '47+'} Google Scholar Verified)`}
                 </h2>
               </div>
               <span className="text-xs font-bold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-md border border-blue-200">
-                {m.scopusDisplay || '39'} Scopus ({m.ieeeDisplay || '27'} IEEE) • AIP • Springer (SCI) • Wiley • Taylor & Francis
+                {m.scopusDisplay || '41'} Scopus ({m.ieeeDisplay || '27'} IEEE) • AIP • Springer (SCI) • Wiley • Taylor & Francis • IGI Global
               </span>
             </div>
 

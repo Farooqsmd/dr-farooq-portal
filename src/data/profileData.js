@@ -597,8 +597,8 @@ export const PROFESSOR_PROFILE = {
   metrics: {
     publicationsCount: 47,
     publicationsDisplay: "47+",
-    scopusPublicationsCount: 39,
-    scopusDisplay: "39",
+    scopusPublicationsCount: 41,
+    scopusDisplay: "41",
     ieeeCount: 27,
     ieeeDisplay: "27",
     totalCitations: 393,
