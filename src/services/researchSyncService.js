@@ -329,16 +329,7 @@ export async function fetchLiveOrcidPublications() {
     console.warn("ORCID sync notice:", error);
   }
 
-  // Deduplicate live works and perform smart merge with catalog
-  const { merged, genuinelyNewWorks } = smartMergePublications(PUBLICATIONS_DATA, liveWorksList);
-
-  // Save clean merged results to localStorage v3
-  if (typeof window !== 'undefined') {
-    localStorage.setItem(STORAGE_KEY_LAST_SYNC, new Date().toISOString());
-    localStorage.setItem(STORAGE_KEY_PUBLICATIONS, JSON.stringify(genuinelyNewWorks));
-  }
-
-  // 3. Query Live Scopus Serverless Proxy (Vercel Backend)
+  // 3. Query Live Scopus Serverless Proxy (Vercel Backend & Elsevier Search API)
   let liveScopusMetrics = null;
   try {
     const scopusRes = await fetch('/api/scopus');
@@ -346,10 +337,22 @@ export async function fetchLiveOrcidPublications() {
       const sData = await scopusRes.json();
       if (sData && sData.scopusCount) {
         liveScopusMetrics = sData;
+        if (Array.isArray(sData.works) && sData.works.length > 0) {
+          liveWorksList.push(...sData.works);
+        }
       }
     }
   } catch (e) {
     // Non-blocking fallback to offline catalog
+  }
+
+  // Deduplicate live works and perform smart merge with catalog
+  const { merged, genuinelyNewWorks } = smartMergePublications(PUBLICATIONS_DATA, liveWorksList);
+
+  // Save clean merged results to localStorage v6
+  if (typeof window !== 'undefined') {
+    localStorage.setItem(STORAGE_KEY_LAST_SYNC, new Date().toISOString());
+    localStorage.setItem(STORAGE_KEY_PUBLICATIONS, JSON.stringify(genuinelyNewWorks));
   }
 
   return {
