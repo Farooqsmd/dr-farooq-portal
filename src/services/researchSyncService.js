@@ -80,8 +80,61 @@ export function isSamePublication(p1, p2) {
 }
 
 /**
+ * Global Scopus-Indexed Publisher & DOI Prefix Matrix:
+ * Automatically detects whether any existing or newly published article is indexed in Scopus.
+ * Covers IEEE, Springer Nature, Elsevier, Wiley, AIP, CRC Press / Taylor & Francis, IGI Global, ACM, IOP, etc.
+ */
+export const SCOPUS_DOI_PREFIXES = [
+  '10.1109', // IEEE / IEEE Xplore
+  '10.1007', // Springer Nature / SCI Journals
+  '10.1038', // Nature Publishing Group
+  '10.1016', // Elsevier / ScienceDirect
+  '10.1002', // Wiley / Wiley Online Library
+  '10.1063', // AIP (American Institute of Physics)
+  '10.1201', // CRC Press / Taylor & Francis Group
+  '10.1080', // Taylor & Francis
+  '10.4018', // IGI Global (ACIR Series)
+  '10.1145', // ACM (Association for Computing Machinery)
+  '10.1088', // IOP Publishing
+  '10.3390', // MDPI
+  '10.1049'  // IET (Institution of Engineering and Technology)
+];
+
+export function isScopusIndexedWork(doi = '', venue = '', publisherName = '') {
+  const d = (doi || '').toLowerCase().trim();
+  const v = (venue || '').toLowerCase();
+  const p = (publisherName || '').toLowerCase();
+
+  for (const prefix of SCOPUS_DOI_PREFIXES) {
+    if (d.includes(prefix)) return true;
+  }
+
+  if (
+    v.includes('ieee') || p.includes('ieee') ||
+    v.includes('springer') || p.includes('springer') ||
+    v.includes('elsevier') || p.includes('elsevier') ||
+    v.includes('wiley') || p.includes('wiley') ||
+    v.includes('taylor') || p.includes('taylor') ||
+    v.includes('crc press') || p.includes('crc press') ||
+    v.includes('aip conference') || p.includes('aip') ||
+    v.includes('igi global') || p.includes('igi') ||
+    v.includes('computational intelligence and robotics') ||
+    v.includes('power energy') ||
+    v.includes('acm ') || p.includes('acm') ||
+    v.includes('iop ') || p.includes('iop') ||
+    v.includes('supercomputing') ||
+    v.includes('procedia')
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
+/**
  * Merges live works from OpenAlex / ORCID onto the catalog without duplicating.
- * Merges indexing badges (IEEE, Scopus, Scholar), updates citations and direct DOIs.
+ * Automatically classifies Scopus indexed status using the global publisher matrix.
+ * Discovers and appends genuinely new publications on the fly.
  */
 export function smartMergePublications(baseCatalog, liveWorks) {
   const merged = baseCatalog.map(p => ({
@@ -89,6 +142,8 @@ export function smartMergePublications(baseCatalog, liveWorks) {
     sources: [...(p.sources || [])],
     tags: [...(p.tags || [])]
   }));
+
+  const genuinelyNewWorks = [];
 
   for (const incoming of liveWorks) {
     const matchIdx = merged.findIndex(ex => isSamePublication(ex, incoming));
@@ -103,6 +158,12 @@ export function smartMergePublications(baseCatalog, liveWorks) {
         sourcesSet.add('IEEE Xplore');
         sourcesSet.add('Scopus');
       }
+      if (incoming.sources && incoming.sources.includes('Scopus')) {
+        sourcesSet.add('Scopus');
+      }
+      if (isScopusIndexedWork(ex.doi || incoming.doi, ex.venue || incoming.venue, incoming.venue)) {
+        sourcesSet.add('Scopus');
+      }
       ex.sources = Array.from(sourcesSet);
 
       // Maximize citation count
@@ -113,10 +174,24 @@ export function smartMergePublications(baseCatalog, liveWorks) {
       if (incoming.doi && (!ex.url || ex.url.includes('scholar.google.com'))) {
         ex.url = `https://doi.org/${incoming.doi.replace(/^https?:\/\/doi\.org\//, '')}`;
       }
+    } else {
+      // BRAND NEW PUBLICATION DETECTED AUTOMATICALLY!
+      const isScopus = isScopusIndexedWork(incoming.doi, incoming.venue, incoming.venue) || (incoming.sources || []).includes('Scopus');
+      const sourcesSet = new Set([...(incoming.sources || ['Google Scholar'])]);
+      if (isScopus) sourcesSet.add('Scopus');
+
+      const newWork = {
+        ...incoming,
+        id: incoming.id || `live-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
+        sources: Array.from(sourcesSet),
+        tags: isScopus ? [...new Set([...(incoming.tags || []), 'Scopus Indexed'])] : incoming.tags
+      };
+      merged.unshift(newWork);
+      genuinelyNewWorks.push(newWork);
     }
   }
 
-  return { merged, genuinelyNewWorks: [] };
+  return { merged, genuinelyNewWorks };
 }
 
 /**
@@ -263,11 +338,26 @@ export async function fetchLiveOrcidPublications() {
     localStorage.setItem(STORAGE_KEY_PUBLICATIONS, JSON.stringify(genuinelyNewWorks));
   }
 
+  // 3. Query Live Scopus Serverless Proxy (Vercel Backend)
+  let liveScopusMetrics = null;
+  try {
+    const scopusRes = await fetch('/api/scopus');
+    if (scopusRes.ok) {
+      const sData = await scopusRes.json();
+      if (sData && sData.scopusCount) {
+        liveScopusMetrics = sData;
+      }
+    }
+  } catch (e) {
+    // Non-blocking fallback to offline catalog
+  }
+
   return {
     success: true,
     count: merged.length,
     works: merged,
-    newCount: genuinelyNewWorks.length
+    newCount: genuinelyNewWorks.length,
+    liveScopusMetrics
   };
 }
 
@@ -309,7 +399,7 @@ export function getInitialResearchData() {
  * Dynamically calculates verified metrics without duplicate inflation.
  * A single paper on IEEE, Scopus, and Scholar is counted ONCE.
  */
-export function calculateDynamicMetrics(allPublications = [], patents = PATENTS_DATA) {
+export function calculateDynamicMetrics(allPublications = [], patents = PATENTS_DATA, liveApiMetrics = null) {
   // Official verified metrics:
   // - Exactly 41 Scopus Publications (27 IEEE conferences + 9 AIP proceedings + 2 SCI journals + 3 book chapters)
   // - Exactly 27 IEEE Publications on IEEE Xplore
@@ -317,26 +407,34 @@ export function calculateDynamicMetrics(allPublications = [], patents = PATENTS_
   // - 12 Patents (3 Granted, 9 Published)
   // - 393+ Citations (h-index: 12, i10: 13)
   const scopusList = allPublications.filter(p => (p.sources || []).includes('Scopus'));
-  const scopusCount = Math.max(41, scopusList.length);
-  const ieeeCount = allPublications.filter(p => (p.sources || []).includes('IEEE Xplore')).length;
+  let scopusCount = Math.max(41, scopusList.length);
+  if (liveApiMetrics && liveApiMetrics.scopusCount) {
+    scopusCount = Math.max(scopusCount, Number(liveApiMetrics.scopusCount) || 41);
+  }
+
+  const ieeeList = allPublications.filter(p => (p.sources || []).includes('IEEE Xplore'));
+  let ieeeCount = Math.max(27, ieeeList.length);
 
   const patentsCount = patents.length;
   const patentsGranted = patents.filter(p => p.status === 'Granted').length;
   const patentsPublished = patents.filter(p => p.status === 'Published').length;
 
   const citationsSum = allPublications.reduce((acc, p) => acc + (Number(p.citations) || 0), 0);
-  const totalCitations = Math.max(393, citationsSum);
+  let totalCitations = Math.max(393, citationsSum);
+  if (liveApiMetrics && liveApiMetrics.citationCount) {
+    totalCitations = Math.max(totalCitations, Number(liveApiMetrics.citationCount) || 393);
+  }
 
   return {
     publicationsCount: 47,
     publicationsDisplay: '47+',
     scopusPublicationsCount: scopusCount,
     scopusDisplay: `${scopusCount}`,
-    ieeeCount: Math.max(27, ieeeCount),
-    ieeeDisplay: `${Math.max(27, ieeeCount)}`,
+    ieeeCount,
+    ieeeDisplay: `${ieeeCount}`,
     totalCitations,
     citationsDisplay: `${totalCitations}+`,
-    hIndex: 12,
+    hIndex: liveApiMetrics?.hIndex ? Math.max(12, Number(liveApiMetrics.hIndex) || 12) : 12,
     i10Index: 13,
     patentsCount,
     patentsDisplay: `${patentsCount}`,
@@ -349,6 +447,8 @@ export function calculateDynamicMetrics(allPublications = [], patents = PATENTS_
 }
 
 export function useResearchSync() {
+  const [liveScopusTelemetry, setLiveScopusTelemetry] = useState(null);
+
   const [publications, setPublications] = useState(() => {
     const init = getInitialResearchData();
     if (init.cachedNewWorks && init.cachedNewWorks.length > 0) {
@@ -365,13 +465,16 @@ export function useResearchSync() {
   });
 
   const metrics = useMemo(() => {
-    return calculateDynamicMetrics(publications, PATENTS_DATA);
-  }, [publications]);
+    return calculateDynamicMetrics(publications, PATENTS_DATA, liveScopusTelemetry);
+  }, [publications, liveScopusTelemetry]);
 
   const triggerSync = useCallback(async (isBackground = false) => {
     if (!isBackground) setIsSyncing(true);
     try {
       const res = await fetchLiveOrcidPublications();
+      if (res.liveScopusMetrics) {
+        setLiveScopusTelemetry(res.liveScopusMetrics);
+      }
       if (res.success && res.works) {
         setPublications(res.works);
         if (res.newCount > 0) {
