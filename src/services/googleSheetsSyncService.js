@@ -223,9 +223,11 @@ export function mapFdpsFromSheet(rows) {
  * Fetches a single tab from Google Sheets using public gviz endpoint
  */
 export async function fetchGoogleSheetTab(sheetId, tabName) {
-  const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tabName)}`;
+  // Cache-busting timestamp and no-store ensure added/deleted rows reflect immediately
+  const timestamp = Date.now();
+  const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tabName)}&t=${timestamp}`;
   
-  const response = await fetch(url);
+  const response = await fetch(url, { cache: 'no-store' });
   if (!response.ok) {
     throw new Error(`Google Sheets responded with status ${response.status} for tab ${tabName}`);
   }
