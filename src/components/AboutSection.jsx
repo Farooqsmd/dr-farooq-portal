@@ -25,11 +25,9 @@ import {
   ArrowRight,
   ArrowDown,
   X,
-  Compass,
-  FileSpreadsheet
+  Compass
 } from 'lucide-react';
 import YoutubeIcon from './icons/YoutubeIcon';
-import GoogleSheetSyncModal from './GoogleSheetSyncModal';
 import { 
   PROFESSOR_PROFILE, 
   SUPERVISOR_DATA, 
@@ -42,7 +40,6 @@ import {
 export default function AboutSection({ setActiveTab, onOpenCV, bioSync }) {
   const [copiedMemberId, setCopiedMemberId] = useState(null);
   const [membershipFilter, setMembershipFilter] = useState('all'); // all, life, international, national
-  const [isSheetModalOpen, setIsSheetModalOpen] = useState(false);
   
   // Dynamic Bio Datasets (Live Synced via Google Sheets or fallback to profileData)
   const awards = bioSync?.awards || PROFESSOR_PROFILE.awards;
@@ -332,21 +329,6 @@ export default function AboutSection({ setActiveTab, onOpenCV, bioSync }) {
               <span>{sec.label}</span>
             </button>
           ))}
-
-          {/* Direct Google Sheet Live Bio Sync Button */}
-          <button
-            onClick={() => setIsSheetModalOpen(true)}
-            className="sm:ml-auto inline-flex items-center space-x-1.5 px-3 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold text-xs shadow-2xs transition-all cursor-pointer"
-            title="Connect or Sync your Google Sheet for real-time Bio updates"
-          >
-            <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-            <span>Sync Google Sheet</span>
-            {bioSync?.isSyncing ? (
-              <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping" />
-            ) : bioSync?.isCustomSheet ? (
-              <span className="w-2 h-2 rounded-full bg-emerald-500" />
-            ) : null}
-          </button>
         </div>
       </div>
 
@@ -369,17 +351,8 @@ export default function AboutSection({ setActiveTab, onOpenCV, bioSync }) {
               </p>
             </div>
 
-            {/* Quick Badges & Sheet Sync */}
+            {/* Quick Badges */}
             <div className="flex flex-wrap items-center gap-2 shrink-0">
-              <button
-                onClick={() => setIsSheetModalOpen(true)}
-                className="px-2.5 py-1 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-400/40 text-emerald-300 text-xs font-bold inline-flex items-center space-x-1.5 cursor-pointer transition-all"
-                title="Connect or Sync your Google Sheet for real-time Bio updates"
-              >
-                <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Live Google Sheet Sync</span>
-                {bioSync?.isCustomSheet && <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />}
-              </button>
               <span className="px-2.5 py-1 rounded-lg bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-xs font-bold">
                 ✓ Ph.D. Guide (JNTUA & AU)
               </span>
@@ -1428,14 +1401,6 @@ export default function AboutSection({ setActiveTab, onOpenCV, bioSync }) {
           ))}
         </div>
       </section>
-
-      {/* Google Sheets Live Bio Sync Modal */}
-      <GoogleSheetSyncModal
-        isOpen={isSheetModalOpen}
-        onClose={() => setIsSheetModalOpen(false)}
-        bioSync={bioSync}
-      />
-
     </div>
   );
 }
