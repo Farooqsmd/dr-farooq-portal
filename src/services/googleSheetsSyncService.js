@@ -11,8 +11,8 @@ export const STORAGE_KEY_SHEET_ID = "dr_farooq_google_sheet_id";
 export const STORAGE_KEY_BIO_CACHE = "dr_farooq_bio_sheet_cache_v1";
 export const STORAGE_KEY_LAST_BIO_SYNC = "dr_farooq_bio_last_sync_v1";
 
-// Default/fallback Sheet ID (can be configured by Dr. Farooq via UI modal or input)
-export const DEFAULT_SHEET_ID = "";
+// Default/fallback Sheet ID (Live linked to Dr. Farooq's Google Sheet)
+export const DEFAULT_SHEET_ID = "1h2MdXe8OA1H8j3VcoUt2wBt3t0UsAW8T77SISKFcrxw";
 
 /**
  * Robust RFC 4180 compliant CSV parser that handles:
@@ -94,7 +94,20 @@ export function extractSheetId(input) {
 export function mapPatentsFromSheet(rows) {
   if (!rows || rows.length === 0) return null;
   return rows.map((r, idx) => {
-    const patentNo = r.patentno || r.patentnumber || r.patent || `PAT-${idx + 1}`;
+    let patentNo = r.patentno || r.patentnumber || r.patent || `PAT-${idx + 1}`;
+    
+    // Auto-recover scientific notation mangled by spreadsheet apps (e.g. 2.02E+11)
+    if (/[eE][+-]?\d+/.test(patentNo)) {
+      const rowTitle = (r.title || '').toLowerCase().trim();
+      const match = PATENTS_DATA.find(p => 
+        (rowTitle && p.title.toLowerCase().trim() === rowTitle) ||
+        p.slNo === String(idx + 1)
+      );
+      if (match && match.patentNo) {
+        patentNo = match.patentNo;
+      }
+    }
+
     const statusRaw = (r.status || 'Published').toLowerCase();
     const status = statusRaw.includes('grant') ? 'Granted' : 'Published';
     const kapilaRaw = (r.kapilascheme || r.kapila || '').toLowerCase();
@@ -152,6 +165,22 @@ export function mapResourcePersonFromSheet(rows) {
 export function mapMembershipsFromSheet(rows) {
   if (!rows || rows.length === 0) return null;
   return rows.map((r, idx) => {
+    let membershipId = r.membershipid || r.id || 'Verified';
+
+    // Auto-recover scientific notation mangled by spreadsheet apps (e.g. 1.02E+08 for IEEE)
+    if (/[eE][+-]?\d+/.test(membershipId)) {
+      const shortName = (r.shortform || r.short || '').toLowerCase().trim();
+      const societyName = (r.societyname || r.name || '').toLowerCase().trim();
+      const match = (PROFESSOR_PROFILE.memberships || []).find(m => 
+        (shortName && m.short.toLowerCase().trim() === shortName) ||
+        (societyName && m.name.toLowerCase().trim() === societyName) ||
+        m.id === `mem-${idx + 1}`
+      );
+      if (match && match.membershipId) {
+        membershipId = match.membershipId;
+      }
+    }
+
     const isLifeRaw = (r.islifemember || r.lifemember || r.role || '').toLowerCase();
     const isLifeMember = isLifeRaw === 'true' || isLifeRaw === 'yes' || isLifeRaw.includes('life');
 
@@ -160,7 +189,7 @@ export function mapMembershipsFromSheet(rows) {
       name: r.societyname || r.name || 'Professional Engineering Society',
       short: r.shortform || r.short || 'Society',
       role: r.role || (isLifeMember ? 'Life Time Member' : 'Member'),
-      membershipId: r.membershipid || r.id || 'Verified',
+      membershipId,
       isLifeMember,
       tier: r.tier || 'National',
       category: r.category || 'Professional Technical Body',
