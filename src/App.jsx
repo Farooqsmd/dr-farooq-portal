@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import AboutSection from './components/AboutSection';
@@ -11,15 +11,34 @@ import AcademicCVModal from './components/AcademicCVModal';
 import MaterialsVault from './components/MaterialsVault';
 import ScrollToTop from './components/ScrollToTop';
 import { useResearchSync } from './services/researchSyncService';
+import { useBioSync } from './services/googleSheetsSyncService';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('about');
   const [tutorContext, setTutorContext] = useState(null);
   const [isCVModalOpen, setIsCVModalOpen] = useState(false);
 
-  // Global live research synchronization hook (IEEE, ORCID, OpenAlex)
+  // Global live research synchronization hook (IEEE, Scopus, ORCID)
   const researchSync = useResearchSync();
-  const { metrics } = researchSync;
+
+  // Global live bio synchronization hook (Google Sheets: Patents, Awards, Talks, Memberships, FDPs)
+  const bioSync = useBioSync();
+
+  // Combined metrics dynamically reflecting live research + live bio datasets
+  const combinedMetrics = useMemo(() => {
+    return {
+      ...researchSync.metrics,
+      patentsCount: bioSync.dynamicBioMetrics.patentsCount,
+      patentsDisplay: bioSync.dynamicBioMetrics.patentsDisplay,
+      patentsGranted: bioSync.dynamicBioMetrics.patentsGranted,
+      patentsPublished: bioSync.dynamicBioMetrics.patentsPublished,
+      kapilaSchemePatents: bioSync.dynamicBioMetrics.kapilaSchemePatents,
+      stateAwardsCount: bioSync.dynamicBioMetrics.stateAwardsCount,
+      resourcePersonCount: bioSync.dynamicBioMetrics.resourcePersonCount,
+      membershipsCount: bioSync.dynamicBioMetrics.membershipsCount,
+      fdpCount: bioSync.dynamicBioMetrics.fdpCount,
+    };
+  }, [researchSync.metrics, bioSync.dynamicBioMetrics]);
 
   // When a student clicks "Ask AI Doubt" from a subject card in Curriculum
   const handleSelectSubjectForTutor = (context) => {
@@ -36,7 +55,7 @@ export default function App() {
         <Navbar 
           activeTab={activeTab} 
           setActiveTab={setActiveTab} 
-          dynamicMetrics={metrics} 
+          dynamicMetrics={combinedMetrics} 
           onOpenCV={() => setIsCVModalOpen(true)} 
         />
       </div>
@@ -45,7 +64,7 @@ export default function App() {
       <div className="print-hide no-print">
         <Hero 
           setActiveTab={setActiveTab} 
-          dynamicMetrics={metrics} 
+          dynamicMetrics={combinedMetrics} 
           onOpenCV={() => setIsCVModalOpen(true)} 
         />
       </div>
@@ -55,7 +74,8 @@ export default function App() {
         {activeTab === 'about' && (
           <AboutSection 
             setActiveTab={setActiveTab} 
-            onOpenCV={() => setIsCVModalOpen(true)} 
+            onOpenCV={() => setIsCVModalOpen(true)}
+            bioSync={bioSync}
           />
         )}
 
@@ -85,6 +105,7 @@ export default function App() {
           <ResearchHub 
             setActiveTab={setActiveTab} 
             dynamicState={researchSync} 
+            bioSync={bioSync}
             onOpenCV={() => setIsCVModalOpen(true)} 
           />
         )}
@@ -99,8 +120,13 @@ export default function App() {
       <AcademicCVModal
         isOpen={isCVModalOpen}
         onClose={() => setIsCVModalOpen(false)}
-        dynamicMetrics={metrics}
+        dynamicMetrics={combinedMetrics}
         publications={researchSync.publications}
+        patents={bioSync.patents}
+        awards={bioSync.awards}
+        resourcePerson={bioSync.resourcePerson}
+        memberships={bioSync.memberships}
+        fdps={bioSync.fdps}
       />
 
       {/* Floating Scroll to Top Button */}

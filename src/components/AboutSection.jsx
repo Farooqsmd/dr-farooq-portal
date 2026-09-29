@@ -25,9 +25,11 @@ import {
   ArrowRight,
   ArrowDown,
   X,
-  Compass
+  Compass,
+  FileSpreadsheet
 } from 'lucide-react';
 import YoutubeIcon from './icons/YoutubeIcon';
+import GoogleSheetSyncModal from './GoogleSheetSyncModal';
 import { 
   PROFESSOR_PROFILE, 
   SUPERVISOR_DATA, 
@@ -37,9 +39,16 @@ import {
   FDP_TRAINING_DATA 
 } from '../data/profileData';
 
-export default function AboutSection({ setActiveTab, onOpenCV }) {
+export default function AboutSection({ setActiveTab, onOpenCV, bioSync }) {
   const [copiedMemberId, setCopiedMemberId] = useState(null);
   const [membershipFilter, setMembershipFilter] = useState('all'); // all, life, international, national
+  const [isSheetModalOpen, setIsSheetModalOpen] = useState(false);
+  
+  // Dynamic Bio Datasets (Live Synced via Google Sheets or fallback to profileData)
+  const awards = bioSync?.awards || PROFESSOR_PROFILE.awards;
+  const resourcePerson = bioSync?.resourcePerson || RESOURCE_PERSON_DATA;
+  const memberships = bioSync?.memberships || PROFESSOR_PROFILE.memberships;
+  const fdps = bioSync?.fdps || FDP_TRAINING_DATA;
   
   // FDP Section interactive filters
   const [fdpYearFilter, setFdpYearFilter] = useState('all'); // all, 2025, 2024, 2023, 2022, 2021, 2020, 2013
@@ -52,7 +61,7 @@ export default function AboutSection({ setActiveTab, onOpenCV }) {
     setTimeout(() => setCopiedMemberId(null), 2500);
   };
 
-  const filteredMemberships = (PROFESSOR_PROFILE.memberships || []).filter(m => {
+  const filteredMemberships = (memberships || []).filter(m => {
     if (membershipFilter === 'life') return m.isLifeMember;
     if (membershipFilter === 'international') return m.tier === 'International';
     if (membershipFilter === 'national') return m.tier === 'National';
@@ -61,25 +70,25 @@ export default function AboutSection({ setActiveTab, onOpenCV }) {
 
   // Filtered FDPs - Sorted reverse chronological order (recent on top)
   const filteredFdps = useMemo(() => {
-    return FDP_TRAINING_DATA.filter(item => {
+    return (fdps || []).filter(item => {
       if (fdpYearFilter !== 'all' && item.year !== fdpYearFilter) return false;
       if (fdpCategoryFilter !== 'all' && item.category !== fdpCategoryFilter) return false;
       if (fdpSearchQuery.trim()) {
         const query = fdpSearchQuery.toLowerCase();
-        const matchesTitle = item.title.toLowerCase().includes(query);
-        const matchesCat = item.category.toLowerCase().includes(query);
-        const matchesYear = item.year.includes(query);
+        const matchesTitle = (item.title || '').toLowerCase().includes(query);
+        const matchesCat = (item.category || '').toLowerCase().includes(query);
+        const matchesYear = String(item.year || '').includes(query);
         if (!matchesTitle && !matchesCat && !matchesYear) return false;
       }
       return true;
     });
-  }, [fdpYearFilter, fdpCategoryFilter, fdpSearchQuery]);
+  }, [fdpYearFilter, fdpCategoryFilter, fdpSearchQuery, fdps]);
 
   // Unique FDP categories
   const fdpCategories = useMemo(() => {
-    const cats = new Set(FDP_TRAINING_DATA.map(f => f.category));
+    const cats = new Set((fdps || []).map(f => f.category));
     return Array.from(cats);
-  }, []);
+  }, [fdps]);
 
   // Profile Search & In-Page Navigation State
   const [profileSearchQuery, setProfileSearchQuery] = useState('');
@@ -222,7 +231,7 @@ export default function AboutSection({ setActiveTab, onOpenCV }) {
     });
 
     // 7. Keynote Lectures
-    RESOURCE_PERSON_DATA.forEach(r => {
+    resourcePerson.forEach(r => {
       items.push({
         category: 'Keynote & Expert Lectures',
         title: r.title,
@@ -234,7 +243,7 @@ export default function AboutSection({ setActiveTab, onOpenCV }) {
     });
 
     // 8. Awards & Honors
-    PROFESSOR_PROFILE.awards.forEach(a => {
+    awards.forEach(a => {
       items.push({
         category: 'State Honors & Awards',
         title: a.title,
@@ -246,7 +255,7 @@ export default function AboutSection({ setActiveTab, onOpenCV }) {
     });
 
     // 9. Professional Memberships
-    PROFESSOR_PROFILE.memberships.forEach(m => {
+    memberships.forEach(m => {
       items.push({
         category: 'Professional Society Memberships',
         title: `${m.short} — ${m.name}`,
@@ -258,7 +267,7 @@ export default function AboutSection({ setActiveTab, onOpenCV }) {
     });
 
     // 10. FDPs / STTPs
-    FDP_TRAINING_DATA.forEach(f => {
+    fdps.forEach(f => {
       items.push({
         category: 'Faculty Development (FDP)',
         title: f.title,
@@ -270,7 +279,7 @@ export default function AboutSection({ setActiveTab, onOpenCV }) {
     });
 
     return items;
-  }, []);
+  }, [resourcePerson, awards, memberships, fdps]);
 
   // Filtered search results based on query
   const searchResults = useMemo(() => {
@@ -305,10 +314,10 @@ export default function AboutSection({ setActiveTab, onOpenCV }) {
             { id: 'bos-governance', label: 'BOS Leadership', icon: '🏛️' },
             { id: 'funded-grants', label: 'Funded Grants', icon: '💰' },
             { id: 'education-domains', label: 'Education', icon: '📜' },
-            { id: 'expert-lectures', label: 'Keynotes (4)', icon: '🎤' },
-            { id: 'honors-awards', label: 'Awards (6)', icon: '🏆' },
-            { id: 'faculty-development', label: 'FDPs (54)', icon: '📚' },
-            { id: 'professional-memberships', label: 'Memberships (12)', icon: '🛡️' }
+            { id: 'expert-lectures', label: `Keynotes (${resourcePerson.length})`, icon: '🎤' },
+            { id: 'honors-awards', label: `Awards (${awards.length})`, icon: '🏆' },
+            { id: 'faculty-development', label: `FDPs (${fdps.length})`, icon: '📚' },
+            { id: 'professional-memberships', label: `Memberships (${memberships.length})`, icon: '🛡️' }
           ].map((sec) => (
             <button
               key={sec.id}
@@ -323,6 +332,21 @@ export default function AboutSection({ setActiveTab, onOpenCV }) {
               <span>{sec.label}</span>
             </button>
           ))}
+
+          {/* Direct Google Sheet Live Bio Sync Button */}
+          <button
+            onClick={() => setIsSheetModalOpen(true)}
+            className="sm:ml-auto inline-flex items-center space-x-1.5 px-3 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold text-xs shadow-2xs transition-all cursor-pointer"
+            title="Connect or Sync your Google Sheet for real-time Bio updates"
+          >
+            <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+            <span>Sync Google Sheet</span>
+            {bioSync?.isSyncing ? (
+              <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping" />
+            ) : bioSync?.isCustomSheet ? (
+              <span className="w-2 h-2 rounded-full bg-emerald-500" />
+            ) : null}
+          </button>
         </div>
       </div>
 
@@ -345,8 +369,17 @@ export default function AboutSection({ setActiveTab, onOpenCV }) {
               </p>
             </div>
 
-            {/* Quick Badges */}
+            {/* Quick Badges & Sheet Sync */}
             <div className="flex flex-wrap items-center gap-2 shrink-0">
+              <button
+                onClick={() => setIsSheetModalOpen(true)}
+                className="px-2.5 py-1 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-400/40 text-emerald-300 text-xs font-bold inline-flex items-center space-x-1.5 cursor-pointer transition-all"
+                title="Connect or Sync your Google Sheet for real-time Bio updates"
+              >
+                <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Live Google Sheet Sync</span>
+                {bioSync?.isCustomSheet && <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />}
+              </button>
               <span className="px-2.5 py-1 rounded-lg bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-xs font-bold">
                 ✓ Ph.D. Guide (JNTUA & AU)
               </span>
@@ -596,7 +629,7 @@ export default function AboutSection({ setActiveTab, onOpenCV }) {
               id: 'expert-lectures',
               title: 'Expert Talks & Keynotes',
               subtitle: 'Invited Resource Person',
-              badge: '4 National Sessions',
+              badge: `${resourcePerson.length} National Sessions`,
               color: 'purple',
               icon: Sparkles,
               desc: 'Keynote resource person for AI, IoT, faculty orientation and student career counseling.'
@@ -605,7 +638,7 @@ export default function AboutSection({ setActiveTab, onOpenCV }) {
               id: 'honors-awards',
               title: 'Honors & Recognitions',
               subtitle: 'State Academic Awards',
-              badge: '6 State Awards',
+              badge: `${awards.length} State Awards`,
               color: 'rose',
               icon: Award,
               desc: 'Honored by state and national apex bodies for pedagogical excellence, student mentoring, and research.'
@@ -614,7 +647,7 @@ export default function AboutSection({ setActiveTab, onOpenCV }) {
               id: 'faculty-development',
               title: 'Professional Upskilling',
               subtitle: 'FDPs & STTP Programs',
-              badge: '54 Programs (Recent First)',
+              badge: `${fdps.length} Programs (Recent First)`,
               color: 'cyan',
               icon: BrainCircuit,
               desc: 'AICTE ATAL Academies (IIT Patna, RGMCET), NIPAM, AWS Cloud, Python, and Generative AI.'
@@ -623,7 +656,7 @@ export default function AboutSection({ setActiveTab, onOpenCV }) {
               id: 'professional-memberships',
               title: 'Learned Societies',
               subtitle: 'Apex Fellowships',
-              badge: '12 Memberships • 2 Life',
+              badge: `${memberships.length} Memberships • ${memberships.filter(m => m.isLifeMember).length} Life`,
               color: 'slate',
               icon: ShieldCheck,
               desc: 'Life Member ISTE (LM96672), Life Member ISRD (M4150902960), IEEE, ACM & International Bodies.'
@@ -868,18 +901,18 @@ export default function AboutSection({ setActiveTab, onOpenCV }) {
           <div className="mt-8 pt-6 border-t border-slate-100">
             <div className="flex items-center justify-between mb-3">
               <h4 className="text-xs font-bold uppercase text-slate-400 tracking-wider">
-                Society Associations ({PROFESSOR_PROFILE.memberships.length})
+                Society Associations ({memberships.length})
               </h4>
               <a
                 href="#professional-memberships"
                 className="text-[11px] font-bold text-indigo-600 hover:text-indigo-800 transition-colors inline-flex items-center space-x-0.5 cursor-pointer"
               >
-                <span>View All {PROFESSOR_PROFILE.memberships.length}</span>
+                <span>View All {memberships.length}</span>
                 <ChevronRight className="w-3 h-3" />
               </a>
             </div>
             <div className="flex flex-wrap gap-1.5">
-              {PROFESSOR_PROFILE.memberships.slice(0, 6).map((m) => (
+              {memberships.slice(0, 6).map((m) => (
                 <span
                   key={m.id}
                   className={`text-[10px] font-bold px-2 py-1 rounded-md border ${
@@ -891,9 +924,11 @@ export default function AboutSection({ setActiveTab, onOpenCV }) {
                   {m.short}
                 </span>
               ))}
-              <span className="text-[10px] font-bold px-2 py-1 rounded-md bg-indigo-50 text-indigo-700 border border-indigo-200">
-                +{PROFESSOR_PROFILE.memberships.length - 6} more
-              </span>
+              {memberships.length > 6 && (
+                <span className="text-[10px] font-bold px-2 py-1 rounded-md bg-indigo-50 text-indigo-700 border border-indigo-200">
+                  +{memberships.length - 6} more
+                </span>
+              )}
             </div>
           </div>
         </section>
@@ -953,7 +988,7 @@ export default function AboutSection({ setActiveTab, onOpenCV }) {
           <div>
             <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-purple-50 text-purple-700 text-xs font-bold uppercase tracking-wider mb-3">
               <Sparkles className="w-4 h-4 text-purple-600" />
-              <span>Keynotes & Invited Talks ({RESOURCE_PERSON_DATA.length} Sessions)</span>
+              <span>Keynotes & Invited Talks ({resourcePerson.length} Sessions)</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
               Resource Person & Expert Lectures
@@ -975,7 +1010,7 @@ export default function AboutSection({ setActiveTab, onOpenCV }) {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {RESOURCE_PERSON_DATA.map((rp) => (
+          {resourcePerson.map((rp) => (
             <div 
               key={rp.id}
               className="p-6 rounded-2xl bg-gradient-to-br from-slate-50 to-white border border-slate-200 hover:border-purple-300 hover:shadow-md transition-all duration-200 flex flex-col justify-between"
@@ -1021,7 +1056,7 @@ export default function AboutSection({ setActiveTab, onOpenCV }) {
         <div className="text-center max-w-2xl mx-auto mb-10">
           <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-bold uppercase tracking-wider mb-3">
             <Award className="w-4 h-4" />
-            <span>Honors & Recognitions ({PROFESSOR_PROFILE.awards.length} State Awards)</span>
+            <span>Honors & Recognitions ({awards.length} State Awards)</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
             Academic Awards & Distinctions
@@ -1032,7 +1067,7 @@ export default function AboutSection({ setActiveTab, onOpenCV }) {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {PROFESSOR_PROFILE.awards.map((award, i) => (
+          {awards.map((award, i) => (
             <div 
               key={i} 
               className="bg-white rounded-2xl p-6 border border-slate-200/90 shadow-xs hover:shadow-md hover:border-amber-400/60 transition-all duration-200 flex flex-col justify-between"
@@ -1095,7 +1130,7 @@ export default function AboutSection({ setActiveTab, onOpenCV }) {
           <div>
             <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-cyan-50 text-cyan-800 text-xs font-bold uppercase tracking-wider mb-3">
               <BookOpen className="w-4 h-4 text-cyan-600" />
-              <span>Professional Upskilling ({FDP_TRAINING_DATA.length} Programs)</span>
+              <span>Professional Upskilling ({fdps.length} Programs)</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
               Faculty Development Programs (FDP) & STTP
@@ -1133,10 +1168,10 @@ export default function AboutSection({ setActiveTab, onOpenCV }) {
                   : 'bg-white text-slate-600 hover:text-slate-900 border border-slate-200'
               }`}
             >
-              All Years ({FDP_TRAINING_DATA.length})
+              All Years ({fdps.length})
             </button>
             {['2025', '2024', '2023', '2022', '2021', '2020', '2013'].map(year => {
-              const count = FDP_TRAINING_DATA.filter(f => f.year === year).length;
+              const count = fdps.filter(f => f.year === year).length;
               if (count === 0) return null;
               return (
                 <button
@@ -1193,7 +1228,7 @@ export default function AboutSection({ setActiveTab, onOpenCV }) {
 
         {/* Results Count & Filter Status */}
         <div className="flex items-center justify-between text-xs text-slate-500 mb-3 px-1">
-          <span>Showing <strong>{filteredFdps.length}</strong> of {FDP_TRAINING_DATA.length} programs</span>
+          <span>Showing <strong>{filteredFdps.length}</strong> of {fdps.length} programs</span>
           {(fdpYearFilter !== 'all' || fdpCategoryFilter !== 'all' || fdpSearchQuery) && (
             <button
               onClick={() => { setFdpYearFilter('all'); setFdpCategoryFilter('all'); setFdpSearchQuery(''); }}
@@ -1252,7 +1287,7 @@ export default function AboutSection({ setActiveTab, onOpenCV }) {
           <div>
             <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-bold uppercase tracking-wider mb-3">
               <ShieldCheck className="w-4 h-4 text-indigo-600" />
-              <span>Professional Fellowships & Learned Societies ({PROFESSOR_PROFILE.memberships.length})</span>
+              <span>Professional Fellowships & Learned Societies ({memberships.length})</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
               Professional Society Memberships
@@ -1272,7 +1307,7 @@ export default function AboutSection({ setActiveTab, onOpenCV }) {
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              All ({PROFESSOR_PROFILE.memberships.length})
+              All ({memberships.length})
             </button>
             <button
               onClick={() => setMembershipFilter('life')}
@@ -1282,7 +1317,7 @@ export default function AboutSection({ setActiveTab, onOpenCV }) {
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              ★ Life Members (2)
+              ★ Life Members ({memberships.filter(m => m.isLifeMember).length})
             </button>
             <button
               onClick={() => setMembershipFilter('international')}
@@ -1292,7 +1327,7 @@ export default function AboutSection({ setActiveTab, onOpenCV }) {
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              International ({PROFESSOR_PROFILE.memberships.filter(m => m.tier === 'International').length})
+              International ({memberships.filter(m => m.tier === 'International').length})
             </button>
             <button
               onClick={() => setMembershipFilter('national')}
@@ -1302,14 +1337,14 @@ export default function AboutSection({ setActiveTab, onOpenCV }) {
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              National ({PROFESSOR_PROFILE.memberships.filter(m => m.tier === 'National').length})
+              National ({memberships.filter(m => m.tier === 'National').length})
             </button>
 
             {onOpenCV && (
               <button
                 onClick={onOpenCV}
                 className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-xs transition-colors cursor-pointer"
-                title={`Download Academic CV with all ${PROFESSOR_PROFILE.memberships.length} Memberships`}
+                title={`Download Academic CV with all ${memberships.length} Memberships`}
               >
                 <FileText className="w-3.5 h-3.5" />
                 <span>Export in CV (PDF)</span>
@@ -1393,6 +1428,13 @@ export default function AboutSection({ setActiveTab, onOpenCV }) {
           ))}
         </div>
       </section>
+
+      {/* Google Sheets Live Bio Sync Modal */}
+      <GoogleSheetSyncModal
+        isOpen={isSheetModalOpen}
+        onClose={() => setIsSheetModalOpen(false)}
+        bioSync={bioSync}
+      />
 
     </div>
   );

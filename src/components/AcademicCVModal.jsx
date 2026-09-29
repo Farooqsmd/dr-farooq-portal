@@ -34,19 +34,17 @@ import { PATENTS_DATA, PUBLICATIONS_DATA, RESEARCH_METRICS } from '../data/resea
 // Ordered list of academic years (Recent Years at the Top: 2025 to 2013)
 const FDP_YEARS_ORDER = ['2025', '2024', '2023', '2022', '2021', '2020', '2013'];
 
-// Group FDPs by Academic Year at module level
-const FDP_BY_YEAR = (() => {
-  const groups = {};
-  FDP_YEARS_ORDER.forEach(y => { groups[y] = []; });
-  FDP_TRAINING_DATA.forEach(item => {
-    const y = item.year || '2020';
-    if (!groups[y]) groups[y] = [];
-    groups[y].push(item);
-  });
-  return groups;
-})();
-
-export default function AcademicCVModal({ isOpen, onClose, dynamicMetrics, publications }) {
+export default function AcademicCVModal({ 
+  isOpen, 
+  onClose, 
+  dynamicMetrics, 
+  publications,
+  patents: propPatents,
+  awards: propAwards,
+  resourcePerson: propResourcePerson,
+  memberships: propMemberships,
+  fdps: propFdps
+}) {
   const [cvFormat, setCvFormat] = useState('full'); // 'full' (Comprehensive CV) or 'executive' (2-Page Resume)
   const [fontFamily, setFontFamily] = useState('serif'); // 'serif' (Classic Academic) or 'sans' (Modern Executive)
   const [pubScope, setPubScope] = useState('scopus'); // 'scopus' (41 Scopus Papers) or 'all' (All 74 Publications)
@@ -55,6 +53,24 @@ export default function AcademicCVModal({ isOpen, onClose, dynamicMetrics, publi
 
   const m = dynamicMetrics || PROFESSOR_PROFILE.metrics || RESEARCH_METRICS;
   const allPubs = publications || PUBLICATIONS_DATA;
+  const allPatents = propPatents || PATENTS_DATA;
+  const allAwards = propAwards || PROFESSOR_PROFILE.awards;
+  const allResourcePerson = propResourcePerson || RESOURCE_PERSON_DATA;
+  const allMemberships = propMemberships || PROFESSOR_PROFILE.memberships;
+  const allFdps = propFdps || FDP_TRAINING_DATA;
+
+  // Group FDPs by Academic Year
+  const fdpByYear = useMemo(() => {
+    const groups = {};
+    FDP_YEARS_ORDER.forEach(y => { groups[y] = []; });
+    allFdps.forEach(item => {
+      const y = item.year || '2020';
+      if (!groups[y]) groups[y] = [];
+      groups[y].push(item);
+    });
+    return groups;
+  }, [allFdps]);
+
   const scopusPubs = useMemo(() => allPubs.filter(p => (p.sources || []).includes('Scopus')), [allPubs]);
 
   // Strictly deduplicated complete publication catalog (guaranteeing zero duplicates)
@@ -97,8 +113,8 @@ export default function AcademicCVModal({ isOpen, onClose, dynamicMetrics, publi
   const displayedPubs = cvFormat === 'executive' ? activePubs.slice(0, 10) : activePubs;
 
   const displayedFdps = cvFormat === 'executive' 
-    ? FDP_TRAINING_DATA.filter(f => ['2025', '2024', '2023', '2022'].includes(f.year) || f.isFlagship).slice(0, 12)
-    : FDP_TRAINING_DATA;
+    ? allFdps.filter(f => ['2025', '2024', '2023', '2022'].includes(f.year) || f.isFlagship).slice(0, 12)
+    : allFdps;
 
   const handlePrint = () => {
     const originalTitle = document.title;
@@ -138,14 +154,14 @@ export default function AcademicCVModal({ isOpen, onClose, dynamicMetrics, publi
     text += `- Scopus Indexed Publications: 41 Documents\n`;
     text += `- Total Scholarly Works: 74 Publications (Scopus, IEEE & Google Scholar)\n`;
     text += `- Total Research Citations: 393+ (h-index: 12, i10-index: 13)\n`;
-    text += `- Intellectual Property: 12 Patents (3 Granted, 9 Published under KAPILA Scheme)\n`;
+    text += `- Intellectual Property: ${allPatents.length} Patents (${m.patentsGranted || allPatents.filter(p => p.status === 'Granted').length} Granted, ${m.patentsPublished || allPatents.filter(p => p.status === 'Published').length} Published under KAPILA Scheme)\n`;
     text += `- Sponsored Research Projects & Grants: 2 Completed Grants (₹1,00,000 Sanctioned by JNTUA & DST)\n`;
     text += `- Ph.D. Doctoral Supervision: 2 Universities (JNTUA Empaneled 2023, AU Recognized 2025)\n`;
     text += `- Curricular Governance: BoS Chairperson (CSE, SREC) & Advisory Member (AIML, Stanley)\n`;
-    text += `- Professional Society Memberships: 12 (2 Life Memberships - ISTE LM96672, ISRD M4150902960; WRU Valid 2026)\n`;
-    text += `- State Honors & Faculty Distinctions: 6 State Awards (2025 - 2018)\n`;
-    text += `- Invited Keynotes & Resource Person Sessions: 4 Sessions\n`;
-    text += `- Faculty Development & ATAL Training Programs: 54 Programs\n\n`;
+    text += `- Professional Society Memberships: ${allMemberships.length} (${allMemberships.filter(m => m.isLifeMember).length} Life Memberships - ISTE LM96672, ISRD M4150902960; WRU Valid 2026)\n`;
+    text += `- State Honors & Faculty Distinctions: ${allAwards.length} State Awards (2025 - 2018)\n`;
+    text += `- Invited Keynotes & Resource Person Sessions: ${allResourcePerson.length} Sessions\n`;
+    text += `- Faculty Development & ATAL Training Programs: ${allFdps.length} Programs\n\n`;
 
     text += `III. HIGHER EDUCATION & ACADEMIC CREDENTIALS\n`;
     text += `------------------------------------------------------------------------\n`;
@@ -175,9 +191,9 @@ export default function AcademicCVModal({ isOpen, onClose, dynamicMetrics, publi
     });
     text += `\n`;
 
-    text += `VII. INTELLECTUAL PROPERTY & PATENTS PORTFOLIO (12 PATENTS)\n`;
+    text += `VII. INTELLECTUAL PROPERTY & PATENTS PORTFOLIO (${allPatents.length} PATENTS)\n`;
     text += `------------------------------------------------------------------------\n`;
-    PATENTS_DATA.forEach((p, i) => {
+    allPatents.forEach((p, i) => {
       text += `${i + 1}. [${p.status.toUpperCase()}] "${p.title}"\n   Patent No: ${p.patentNo} | Status: ${p.status} | Date: ${p.status === 'Granted' ? p.publishedDate : p.filedDate || p.year} ${p.kapilaScheme ? '[KAPILA Scheme]' : ''}\n`;
     });
     text += `\n`;
@@ -189,30 +205,30 @@ export default function AcademicCVModal({ isOpen, onClose, dynamicMetrics, publi
     });
     text += `\n`;
 
-    text += `IX. STATE FACULTY HONORS & DISTINCTIONS (6 STATE AWARDS)\n`;
+    text += `IX. STATE FACULTY HONORS & DISTINCTIONS (${allAwards.length} STATE AWARDS)\n`;
     text += `------------------------------------------------------------------------\n`;
-    PROFESSOR_PROFILE.awards.forEach((a, i) => {
+    allAwards.forEach((a, i) => {
       text += `${i + 1}. [Year: ${a.year}] ${a.title} by ${a.organization} (${a.level})\n   Citation: ${a.highlight}\n`;
     });
     text += `\n`;
 
-    text += `X. KEYNOTE ADDRESSES & RESOURCE PERSON ENGAGEMENTS (4 SESSIONS)\n`;
+    text += `X. KEYNOTE ADDRESSES & RESOURCE PERSON ENGAGEMENTS (${allResourcePerson.length} SESSIONS)\n`;
     text += `------------------------------------------------------------------------\n`;
-    RESOURCE_PERSON_DATA.forEach((r, i) => {
+    allResourcePerson.forEach((r, i) => {
       text += `${i + 1}. [${r.year}] "${r.title}"\n   Event: ${r.event} organized by ${r.organization}\n   Role: ${r.role} | Focus Topic: ${r.topic}\n`;
     });
     text += `\n`;
 
-    text += `XI. PROFESSIONAL SOCIETY MEMBERSHIPS & LEARNED BODIES (12 SOCIETIES)\n`;
+    text += `XI. PROFESSIONAL SOCIETY MEMBERSHIPS & LEARNED BODIES (${allMemberships.length} SOCIETIES)\n`;
     text += `------------------------------------------------------------------------\n`;
-    PROFESSOR_PROFILE.memberships.forEach((mem, i) => {
+    allMemberships.forEach((mem, i) => {
       text += `${i + 1}. ${mem.short} (${mem.name}) - ${mem.role} | Member ID: ${mem.membershipId} [${mem.tier}]${mem.validTill ? ' (Valid till: ' + mem.validTill + ')' : ''}\n`;
     });
     text += `\n`;
 
-    text += `XII. FACULTY DEVELOPMENT PROGRAMS (FDP) & PROFESSIONAL TRAINING (54)\n`;
+    text += `XII. FACULTY DEVELOPMENT PROGRAMS (FDP) & PROFESSIONAL TRAINING (${allFdps.length})\n`;
     text += `------------------------------------------------------------------------\n`;
-    FDP_TRAINING_DATA.forEach((f, i) => {
+    allFdps.forEach((f, i) => {
       text += `${i + 1}. [${f.year}] [${f.category}] ${f.title}\n`;
     });
     text += `\n`;
@@ -632,16 +648,16 @@ export default function AcademicCVModal({ isOpen, onClose, dynamicMetrics, publi
               </div>
             </section>
 
-            {/* VII. PATENTS PORTFOLIO (12 - YEAR-WISE) */}
+            {/* VII. PATENTS PORTFOLIO (YEAR-WISE) */}
             <section className="mb-6">
               <div className="avoid-break mb-2.5">
                 <h2 className="text-xs font-bold uppercase tracking-wider text-slate-950 border-b-2 border-slate-900 pb-1 flex items-center justify-between cv-heading">
-                  <span>VII. Intellectual Property & Patents Portfolio (12 Patents)</span>
-                  <span className="text-[10px] text-slate-700 font-semibold">3 Granted & 9 Published (GoI KAPILA Scheme)</span>
+                  <span>VII. Intellectual Property & Patents Portfolio ({allPatents.length} Patents)</span>
+                  <span className="text-[10px] text-slate-700 font-semibold">{allPatents.filter(p => p.status === 'Granted').length} Granted & {allPatents.filter(p => p.status === 'Published').length} Published (GoI KAPILA Scheme)</span>
                 </h2>
               </div>
               <div className="space-y-2 text-xs">
-                {PATENTS_DATA.map((pat, i) => (
+                {allPatents.map((pat, i) => (
                   <div key={pat.id} className="border-b border-slate-200 pb-2 flex justify-between items-start gap-4 avoid-break">
                     <div className="pr-2 flex-1 cv-justified">
                       <div className="font-bold text-slate-950 leading-snug">
@@ -714,16 +730,16 @@ export default function AcademicCVModal({ isOpen, onClose, dynamicMetrics, publi
               </div>
             </section>
 
-            {/* IX. STATE HONORS & AWARDS (6 - YEAR-WISE) */}
+            {/* IX. STATE HONORS & AWARDS (YEAR-WISE) */}
             <section className="mb-6">
               <div className="avoid-break mb-2.5">
                 <h2 className="text-xs font-bold uppercase tracking-wider text-slate-950 border-b-2 border-slate-900 pb-1 flex items-center justify-between cv-heading">
-                  <span>IX. State Faculty Honors & Distinctions (6 State Awards)</span>
+                  <span>IX. State Faculty Honors & Distinctions ({allAwards.length} State Awards)</span>
                   <span className="text-[10px] text-slate-600">Chronological Record (2025 - 2018)</span>
                 </h2>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
-                {PROFESSOR_PROFILE.awards.map((a, i) => (
+                {allAwards.map((a, i) => (
                   <div key={i} className="p-3 border border-slate-200 rounded-lg bg-slate-50/50 shadow-xs avoid-break">
                     <div className="flex justify-between font-bold text-slate-950">
                       <span>{a.title}</span>
@@ -740,12 +756,12 @@ export default function AcademicCVModal({ isOpen, onClose, dynamicMetrics, publi
             <section className="mb-6">
               <div className="avoid-break mb-2.5">
                 <h2 className="text-xs font-bold uppercase tracking-wider text-slate-950 border-b-2 border-slate-900 pb-1 flex items-center justify-between cv-heading">
-                  <span>X. Keynote Addresses & Resource Person Engagements</span>
+                  <span>X. Keynote Addresses & Resource Person Engagements ({allResourcePerson.length} Sessions)</span>
                   <span className="text-[10px] text-slate-600">Recent Years on Top</span>
                 </h2>
               </div>
               <div className="space-y-2.5 text-xs">
-                {RESOURCE_PERSON_DATA.map((rp, i) => (
+                {allResourcePerson.map((rp, i) => (
                   <div key={rp.id} className="border-b border-slate-200 pb-2.5 avoid-break">
                     <div className="flex justify-between items-start gap-3">
                       <div className="font-bold text-slate-950 leading-snug cv-justified flex-1">
@@ -766,16 +782,16 @@ export default function AcademicCVModal({ isOpen, onClose, dynamicMetrics, publi
               </div>
             </section>
 
-            {/* XI. PROFESSIONAL MEMBERSHIPS & LEARNED BODIES (12) */}
+            {/* XI. PROFESSIONAL MEMBERSHIPS & LEARNED BODIES */}
             <section className="mb-6">
               <div className="avoid-break mb-2.5">
                 <h2 className="text-xs font-bold uppercase tracking-wider text-slate-950 border-b-2 border-slate-900 pb-1 flex items-center justify-between cv-heading">
-                  <span>XI. Professional Society Memberships & Learned Bodies ({PROFESSOR_PROFILE.memberships.length})</span>
+                  <span>XI. Professional Society Memberships & Learned Bodies ({allMemberships.length})</span>
                   <span className="text-[10px] text-slate-600">2 Life Memberships • 10 International & National</span>
                 </h2>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 text-xs">
-                {PROFESSOR_PROFILE.memberships.map((mem) => (
+                {allMemberships.map((mem) => (
                   <div key={mem.id} className="flex items-start justify-between py-1.5 border-b border-slate-100 avoid-break">
                     <div className="pr-2 cv-justified">
                       <span className="font-bold text-slate-950">{mem.short}</span>: <span className="text-slate-800 font-medium">{mem.name}</span>
@@ -814,7 +830,7 @@ export default function AcademicCVModal({ isOpen, onClose, dynamicMetrics, publi
               ) : (
                 <div className="space-y-4 text-xs">
                   {FDP_YEARS_ORDER.map(year => {
-                    const items = FDP_BY_YEAR[year];
+                    const items = fdpByYear[year];
                     if (!items || items.length === 0) return null;
                     return (
                       <div key={year} className="space-y-1.5">

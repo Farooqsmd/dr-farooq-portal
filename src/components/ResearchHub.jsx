@@ -20,13 +20,17 @@ import { PROFESSOR_PROFILE, FUNDED_PROJECTS_DATA } from '../data/profileData';
 import { PATENTS_DATA, PUBLICATIONS_DATA, RESEARCH_METRICS } from '../data/researchData';
 import { fetchLiveOrcidPublications, getInitialResearchData } from '../services/researchSyncService';
 
-export default function ResearchHub({ setActiveTab, dynamicState, onOpenCV }) {
+export default function ResearchHub({ setActiveTab, dynamicState, bioSync, onOpenCV }) {
   const [activeCategory, setActiveCategory] = useState('all'); // all, patents, ieee, journals, books, grants, awards
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTag, setSelectedTag] = useState('All');
   const [sortBy, setSortBy] = useState('citations'); // citations, year, title
   const [copiedId, setCopiedId] = useState(null);
   
+  // Dynamic Bio Datasets (Live Synced via Google Sheets or fallback to static)
+  const patentsList = bioSync?.patents || PATENTS_DATA;
+  const awardsList = bioSync?.awards || PROFESSOR_PROFILE.awards || [];
+
   // Live sync state & auto-sync
   const [localIsSyncing, setLocalIsSyncing] = useState(false);
   const [localSyncMessage, setLocalSyncMessage] = useState(null);
@@ -62,8 +66,8 @@ export default function ResearchHub({ setActiveTab, dynamicState, onOpenCV }) {
     const scopusList = allPublications.filter(p => (p.sources || []).includes('Scopus'));
     const scopusCount = m.scopusPublicationsCount ? Number(m.scopusPublicationsCount) : Math.min(41, scopusList.length);
     const scopusJournalsCount = allPublications.filter(p => (p.sources || []).includes('Scopus') && !(p.sources || []).includes('IEEE Xplore')).length;
-    const awardsCount = (PROFESSOR_PROFILE.awards || []).length;
-    const patentsCount = PATENTS_DATA.length; // strictly 12
+    const awardsCount = awardsList.length;
+    const patentsCount = patentsList.length;
     const grantsCount = FUNDED_PROJECTS_DATA.length; // 2 completed
     const totalCount = patentsCount + allPublications.length + awardsCount + grantsCount;
     return {
@@ -75,7 +79,7 @@ export default function ResearchHub({ setActiveTab, dynamicState, onOpenCV }) {
       grants: grantsCount,
       awards: awardsCount
     };
-  }, [allPublications, m]);
+  }, [allPublications, m, patentsList, awardsList]);
 
   // Unique domain tags
   const domainTags = useMemo(() => {
@@ -166,31 +170,31 @@ export default function ResearchHub({ setActiveTab, dynamicState, onOpenCV }) {
     if (activeCategory === 'ieee' || activeCategory === 'scopus' || activeCategory === 'scopus-journals' || activeCategory === 'journals' || activeCategory === 'books' || activeCategory === 'awards') {
       return [];
     }
-    return PATENTS_DATA.filter(pat => {
+    return patentsList.filter(pat => {
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
-        const matchesTitle = pat.title.toLowerCase().includes(q);
-        const matchesNo = pat.patentNo.toLowerCase().includes(q);
+        const matchesTitle = (pat.title || '').toLowerCase().includes(q);
+        const matchesNo = (pat.patentNo || '').toLowerCase().includes(q);
         const matchesCat = (pat.category || '').toLowerCase().includes(q);
         if (!matchesTitle && !matchesNo && !matchesCat) return false;
       }
       return true;
     });
-  }, [activeCategory, searchQuery]);
+  }, [activeCategory, searchQuery, patentsList]);
 
   // Filtered awards
   const filteredAwards = useMemo(() => {
     if (activeCategory === 'patents' || activeCategory === 'ieee' || activeCategory === 'scopus' || activeCategory === 'scopus-journals' || activeCategory === 'journals' || activeCategory === 'books') {
       return [];
     }
-    return (PROFESSOR_PROFILE.awards || []).filter(aw => {
+    return awardsList.filter(aw => {
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
-        return aw.title.toLowerCase().includes(q) || aw.organization.toLowerCase().includes(q);
+        return (aw.title || '').toLowerCase().includes(q) || (aw.organization || '').toLowerCase().includes(q);
       }
       return true;
     });
-  }, [activeCategory, searchQuery]);
+  }, [activeCategory, searchQuery, awardsList]);
 
   const totalResultsCount = (activeCategory === 'patents' ? filteredPatents.length :
     activeCategory === 'awards' ? filteredAwards.length :
@@ -555,11 +559,11 @@ export default function ResearchHub({ setActiveTab, dynamicState, onOpenCV }) {
                   <Lightbulb className="w-4 h-4" />
                 </div>
                 <h2 className="text-lg font-extrabold text-slate-900">
-                  Patents Portfolio (3 Granted & 9 Published in Official Registry)
+                  Patents Portfolio ({patentsList.filter(p => p.status === 'Granted').length} Granted & {patentsList.filter(p => p.status === 'Published').length} Published in Official Registry)
                 </h2>
               </div>
               <span className="text-xs font-bold text-purple-700 bg-purple-50 px-2.5 py-1 rounded-md border border-purple-200">
-                3 Granted • 9 Published • 7 Under GoI KAPILA Scheme
+                {patentsList.filter(p => p.status === 'Granted').length} Granted • {patentsList.filter(p => p.status === 'Published').length} Published • {patentsList.filter(p => p.kapilaScheme).length} Under GoI KAPILA Scheme
               </span>
             </div>
 
@@ -932,7 +936,7 @@ export default function ResearchHub({ setActiveTab, dynamicState, onOpenCV }) {
                   <Award className="w-4 h-4" />
                 </div>
                 <h2 className="text-lg font-extrabold text-slate-900">
-                  State Faculty Honors & Distinctions ({RESEARCH_METRICS.stateAwardsCount} State Awards)
+                  State Faculty Honors & Distinctions ({awardsList.length} State Awards)
                 </h2>
               </div>
               <button
