@@ -212,6 +212,27 @@ export async function fetchGoogleSheetTab(sheetId, tabName) {
 }
 
 /**
+ * Tries fetching a tab with multiple common alias variations (e.g. "Resource_Person", "ResourcePerson", "FDPs", "FDPs_Programs")
+ */
+async function fetchTabWithAliases(sheetId, tabAliases) {
+  let lastError = null;
+  for (const tab of tabAliases) {
+    try {
+      const data = await fetchGoogleSheetTab(sheetId, tab);
+      if (data && data.length > 0) {
+        return data;
+      }
+    } catch (e) {
+      lastError = e;
+    }
+  }
+  if (lastError && lastError.message && lastError.message.includes('Permission Denied')) {
+    throw lastError;
+  }
+  return null;
+}
+
+/**
  * Fetches all 5 bio tabs concurrently from Google Sheets with graceful per-tab fallback
  */
 export async function fetchAllBioDataFromSheet(sheetId) {
@@ -228,20 +249,20 @@ export async function fetchAllBioDataFromSheet(sheetId) {
   }
 
   const results = await Promise.allSettled([
-    fetchGoogleSheetTab(sheetId, 'Patents'),
-    fetchGoogleSheetTab(sheetId, 'Awards'),
-    fetchGoogleSheetTab(sheetId, 'Resource_Person'),
-    fetchGoogleSheetTab(sheetId, 'Memberships'),
-    fetchGoogleSheetTab(sheetId, 'FDPs_Programs')
+    fetchTabWithAliases(sheetId, ['Patents', 'Patent']),
+    fetchTabWithAliases(sheetId, ['Awards', 'Award', 'Honors']),
+    fetchTabWithAliases(sheetId, ['Resource_Person', 'ResourcePerson', 'Resource Person', 'Keynotes', 'Talks']),
+    fetchTabWithAliases(sheetId, ['Memberships', 'Membership']),
+    fetchTabWithAliases(sheetId, ['FDPs_Programs', 'FDPs', 'FDP', 'FDP_Programs', 'Programs', 'Workshops'])
   ]);
 
   const [patentsRes, awardsRes, rpRes, memRes, fdpsRes] = results;
 
-  const patents = patentsRes.status === 'fulfilled' ? mapPatentsFromSheet(patentsRes.value) : null;
-  const awards = awardsRes.status === 'fulfilled' ? mapAwardsFromSheet(awardsRes.value) : null;
-  const resourcePerson = rpRes.status === 'fulfilled' ? mapResourcePersonFromSheet(rpRes.value) : null;
-  const memberships = memRes.status === 'fulfilled' ? mapMembershipsFromSheet(memRes.value) : null;
-  const fdps = fdpsRes.status === 'fulfilled' ? mapFdpsFromSheet(fdpsRes.value) : null;
+  const patents = (patentsRes.status === 'fulfilled' && patentsRes.value) ? mapPatentsFromSheet(patentsRes.value) : null;
+  const awards = (awardsRes.status === 'fulfilled' && awardsRes.value) ? mapAwardsFromSheet(awardsRes.value) : null;
+  const resourcePerson = (rpRes.status === 'fulfilled' && rpRes.value) ? mapResourcePersonFromSheet(rpRes.value) : null;
+  const memberships = (memRes.status === 'fulfilled' && memRes.value) ? mapMembershipsFromSheet(memRes.value) : null;
+  const fdps = (fdpsRes.status === 'fulfilled' && fdpsRes.value) ? mapFdpsFromSheet(fdpsRes.value) : null;
 
   const anySuccess = Boolean(patents || awards || resourcePerson || memberships || fdps);
 
