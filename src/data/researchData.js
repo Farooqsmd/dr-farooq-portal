@@ -1,14 +1,14 @@
 // Verified Research Publications & Patents Repository for Dr. S. Md. Farooq
 // Updated with official record from 'Farooq Patetnts.xlsx' (Department of CSE, Santhiram Engineering College)
-// Synced with Scopus (41 Scopus Indexed Publications), Google Scholar (47+ Publications, 390+ Citations), and ORCID (0000-0003-0936-1980)
+// Synced with Scopus (43 Scopus Indexed Publications), IEEE Xplore (36 IEEE Conferences), Google Scholar (85+ Publications, 393+ Citations), and ORCID (0000-0003-0936-1980)
 
 export const RESEARCH_METRICS = {
-  "publicationsCount": 74,
-  "publicationsDisplay": "47+",
-  "scopusPublicationsCount": 41,
-  "scopusDisplay": "41",
-  "ieeeCount": 27,
-  "ieeeDisplay": "27",
+  "publicationsCount": 85,
+  "publicationsDisplay": "50+",
+  "scopusPublicationsCount": 43,
+  "scopusDisplay": "43",
+  "ieeeCount": 36,
+  "ieeeDisplay": "36",
   "totalCitations": 393,
   "citationsDisplay": "393+",
   "hIndex": 12,
@@ -220,6 +220,226 @@ export const PATENTS_DATA = [
 ];
 
 export const PUBLICATIONS_DATA = [
+  {
+    "title": "Bharat Sum: OCR-Enabled Multilingual News Summarization and Bias Analysis Framework",
+    "authors": "Dr. S. Md. Farooq, S. V. Kishore, et al.",
+    "venue": "Proceedings of 7th International Conference on Smart Systems and Inventive Technology (ICSSIT 2026), IEEE",
+    "year": "2026",
+    "citations": 0,
+    "type": "Conference",
+    "tags": [
+      "IEEE Xplore",
+      "Scopus Indexed",
+      "NLP & Multilingual AI"
+    ],
+    "sources": [
+      "Scopus",
+      "IEEE Xplore",
+      "Google Scholar"
+    ],
+    "doi": "10.1109/icssit69151.2026.11656543",
+    "url": "https://doi.org/10.1109/icssit69151.2026.11656543",
+    "id": "pub-2026-bharat"
+  },
+  {
+    "title": "Variational Quantum Eigen Solver Based Molecular Toxicity Prediction for Drug Candidate Screening",
+    "authors": "Dr. S. Md. Farooq, et al.",
+    "venue": "Proceedings of 2nd International Conference on Modern Sustainable Systems (CMSS 2026), IEEE",
+    "year": "2026",
+    "citations": 0,
+    "type": "Conference",
+    "tags": [
+      "IEEE Xplore",
+      "Scopus Indexed",
+      "Quantum Computing & Healthcare"
+    ],
+    "sources": [
+      "Scopus",
+      "IEEE Xplore",
+      "Google Scholar"
+    ],
+    "doi": "10.1109/cmss69636.2026.11689499",
+    "url": "https://doi.org/10.1109/cmss69636.2026.11689499",
+    "id": "pub-2026-cmss"
+  },
+  {
+    "title": "A Disaster Management System with Offline OSM Caching, Conflict- Aware Synchronization, and QR Code based Emergency Location",
+    "authors": "Dr. S. Md. Farooq, et al.",
+    "venue": "2026 6th International Conference on Soft Computing for Security Applications (ICSCSA 2026), IEEE",
+    "year": "2026",
+    "citations": 0,
+    "type": "Conference",
+    "tags": [
+      "IEEE Xplore",
+      "Disaster Management & IoT",
+      "Mobile Systems"
+    ],
+    "sources": [
+      "IEEE Xplore",
+      "Google Scholar"
+    ],
+    "doi": "10.1109/icscsa69367.2026.11708139",
+    "url": "https://doi.org/10.1109/icscsa69367.2026.11708139",
+    "id": "pub-2026-icscsa-1"
+  },
+  {
+    "title": "AI-Powered Contract Analysis System Using OCR, NLP, and Large Language Models",
+    "authors": "Dr. S. Md. Farooq, et al.",
+    "venue": "2026 6th International Conference on Soft Computing for Security Applications (ICSCSA 2026), IEEE",
+    "year": "2026",
+    "citations": 0,
+    "type": "Conference",
+    "tags": [
+      "IEEE Xplore",
+      "LLMs & NLP",
+      "Legal AI"
+    ],
+    "sources": [
+      "IEEE Xplore",
+      "Google Scholar"
+    ],
+    "doi": "10.1109/icscsa69367.2026.11708170",
+    "url": "https://doi.org/10.1109/icscsa69367.2026.11708170",
+    "id": "pub-2026-icscsa-2"
+  },
+  {
+    "title": "AT-IDS: An Adaptive Transformer-Based Intrusion Detection System with Dynamic Feature Learning and Dual-Path Attention",
+    "authors": "Dr. S. Md. Farooq, et al.",
+    "venue": "2026 6th International Conference on Soft Computing for Security Applications (ICSCSA 2026), IEEE",
+    "year": "2026",
+    "citations": 0,
+    "type": "Conference",
+    "tags": [
+      "IEEE Xplore",
+      "Transformers & Cybersecurity",
+      "Deep Learning"
+    ],
+    "sources": [
+      "IEEE Xplore",
+      "Google Scholar"
+    ],
+    "doi": "10.1109/icscsa69367.2026.11707980",
+    "url": "https://doi.org/10.1109/icscsa69367.2026.11707980",
+    "id": "pub-2026-icscsa-3"
+  },
+  {
+    "title": "Explainable Lightweight Hybrid Ensemble Learning for Android Malware Detection Using Optimized Permission Features",
+    "authors": "Dr. S. Md. Farooq, et al.",
+    "venue": "2026 6th International Conference on Soft Computing for Security Applications (ICSCSA 2026), IEEE",
+    "year": "2026",
+    "citations": 0,
+    "type": "Conference",
+    "tags": [
+      "IEEE Xplore",
+      "Explainable AI (XAI)",
+      "Android Malware Security"
+    ],
+    "sources": [
+      "IEEE Xplore",
+      "Google Scholar"
+    ],
+    "doi": "10.1109/icscsa69367.2026.11708425",
+    "url": "https://doi.org/10.1109/icscsa69367.2026.11708425",
+    "id": "pub-2026-icscsa-4"
+  },
+  {
+    "title": "Large Language Model Fine-Tuning for Automated Cyber Threat Intelligence Extraction From Unstructured Text Reports",
+    "authors": "Dr. S. Md. Farooq, et al.",
+    "venue": "2026 6th International Conference on Soft Computing for Security Applications (ICSCSA 2026), IEEE",
+    "year": "2026",
+    "citations": 0,
+    "type": "Conference",
+    "tags": [
+      "IEEE Xplore",
+      "LLMs & Cyber Intelligence",
+      "NLP"
+    ],
+    "sources": [
+      "IEEE Xplore",
+      "Google Scholar"
+    ],
+    "doi": "10.1109/icscsa69367.2026.11708108",
+    "url": "https://doi.org/10.1109/icscsa69367.2026.11708108",
+    "id": "pub-2026-icscsa-5"
+  },
+  {
+    "title": "PhishGuard-XAI: Explainable Phishing URL Detection Using Cross-Attention Fusion of DistilBERT and Lexical Features",
+    "authors": "Dr. S. Md. Farooq, et al.",
+    "venue": "2026 6th International Conference on Soft Computing for Security Applications (ICSCSA 2026), IEEE",
+    "year": "2026",
+    "citations": 0,
+    "type": "Conference",
+    "tags": [
+      "IEEE Xplore",
+      "Explainable AI (XAI)",
+      "DistilBERT & Web Security"
+    ],
+    "sources": [
+      "IEEE Xplore",
+      "Google Scholar"
+    ],
+    "doi": "10.1109/icscsa69367.2026.11708355",
+    "url": "https://doi.org/10.1109/icscsa69367.2026.11708355",
+    "id": "pub-2026-icscsa-6"
+  },
+  {
+    "title": "SGAASS: A Closed-Loop Adaptive Framework for Personalized Skill Gap Analysis and Deadline-Aware Study Scheduling Using NLP",
+    "authors": "Dr. S. Md. Farooq, et al.",
+    "venue": "2026 6th International Conference on Soft Computing for Security Applications (ICSCSA 2026), IEEE",
+    "year": "2026",
+    "citations": 0,
+    "type": "Conference",
+    "tags": [
+      "IEEE Xplore",
+      "Adaptive Learning",
+      "EdTech AI"
+    ],
+    "sources": [
+      "IEEE Xplore",
+      "Google Scholar"
+    ],
+    "doi": "10.1109/icscsa69367.2026.11707890",
+    "url": "https://doi.org/10.1109/icscsa69367.2026.11707890",
+    "id": "pub-2026-icscsa-7"
+  },
+  {
+    "title": "IOT SUSTAINABLE INTEGRITY SYSTEM SERVICES FOR SECURITY ENVIRONMENT DATA MANAGEMENT BASED ON BLOCKCHAIN",
+    "authors": "Dr. S. Md. Farooq, et al.",
+    "venue": "International Journal of Biology, Pharmacy and Allied Sciences 10 (11), 1048-1058, 2021",
+    "year": "2021",
+    "citations": 0,
+    "type": "Journal",
+    "tags": [
+      "Blockchain & IoT",
+      "Peer-Reviewed"
+    ],
+    "sources": [
+      "Peer-Reviewed Journal",
+      "Google Scholar"
+    ],
+    "doi": "10.31032/ijbpas/2021/10.11.1048",
+    "url": "https://doi.org/10.31032/ijbpas/2021/10.11.1048",
+    "id": "pub-2021-ijbpas"
+  },
+  {
+    "title": "Machine Learning Based Classification and Clustering Analysis of Efficiency of Exercise Against Covid-19 Infection",
+    "authors": "Dr. S. Md. Farooq, et al.",
+    "venue": "Journal of Algebraic Statistics 13 (3), 2022",
+    "year": "2022",
+    "citations": 0,
+    "type": "Journal",
+    "tags": [
+      "Healthcare Analytics",
+      "Peer-Reviewed"
+    ],
+    "sources": [
+      "Peer-Reviewed Journal",
+      "Google Scholar"
+    ],
+    "doi": null,
+    "url": "https://scholar.google.com/scholar?q=Machine+Learning+Based+Classification+and+Clustering+Analysis+of+Efficiency+of+Exercise+Against+Covid-19+Infection",
+    "id": "pub-2022-jas"
+  },
   {
     "title": "Leveraging natural language processing in conversational AI agents to improve healthcare security",
     "authors": "JV Suman, FS Mahammad, M Sunil Kumar, B Sai Chandana, S Majji",

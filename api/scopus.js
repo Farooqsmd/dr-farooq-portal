@@ -1,4 +1,4 @@
-﻿// Vercel Serverless Function: Secure Server-Side Scopus Author API Proxy
+// Vercel Serverless Function: Secure Server-Side Scopus Author API Proxy
 // Author: Dr. S. Md. Farooq (Scopus Author ID: 57202806468)
 
 export default async function handler(req, res) {
@@ -30,7 +30,7 @@ export default async function handler(req, res) {
         success: true,
         source: 'baseline-fallback',
         authorId: SCOPUS_AUTHOR_ID,
-        scopusCount: 41,
+        scopusCount: 43,
         status: authorRes.status
       });
     }
@@ -39,8 +39,8 @@ export default async function handler(req, res) {
     const authorProfile = authorData['author-retrieval-response']?.[0];
     const coreData = authorProfile?.coredata || {};
 
-    const rawDocCount = parseInt(coreData['document-count'] || '41', 10);
-    const scopusCount = Math.max(41, rawDocCount);
+    const rawDocCount = parseInt(coreData['document-count'] || '43', 10);
+    const scopusCount = Math.max(43, rawDocCount);
     const citedByCount = parseInt(coreData['cited-by-count'] || '62', 10);
     const citationCount = parseInt(coreData['citation-count'] || '124', 10);
 

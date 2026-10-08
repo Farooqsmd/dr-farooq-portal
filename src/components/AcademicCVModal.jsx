@@ -270,7 +270,7 @@ export default function AcademicCVModal({
               </h2>
             </div>
             <p className="text-xs text-slate-400 mt-0.5">
-              1-Click official dossier • 41 Scopus indexed papers, 12 patents, Ph.D. Supervision, BoS & 54 FDPs
+              1-Click official dossier • {m.scopusDisplay || '43'} Scopus indexed papers, {m.patentsDisplay || '12'} patents, Ph.D. Supervision, BoS & {m.fdpCount || '54'} FDPs
             </p>
           </div>
 
@@ -281,23 +281,23 @@ export default function AcademicCVModal({
               <span>Justified Typeset</span>
             </div>
 
-            {/* Publication Scope Selector: 41 Scopus vs All Publications */}
+            {/* Publication Scope Selector: Scopus vs All Publications */}
             <div className="flex items-center p-1 rounded-xl bg-slate-800 border border-slate-700 text-xs font-bold">
               <button
                 onClick={() => setPubScope('scopus')}
                 className={`px-3 py-1.5 rounded-lg transition-colors cursor-pointer ${
                   pubScope === 'scopus' ? 'bg-cyan-500 text-slate-950 shadow-xs' : 'text-slate-300 hover:text-white'
                 }`}
-                title="Print only the 41 Scopus Indexed publications"
+                title={`Print only the ${m.scopusDisplay || '43'} Scopus Indexed publications`}
               >
-                Scopus Only ({scopusPubs.length || 41})
+                Scopus Only ({scopusPubs.length || 43})
               </button>
               <button
                 onClick={() => setPubScope('all')}
                 className={`px-3 py-1.5 rounded-lg transition-colors cursor-pointer ${
                   pubScope === 'all' ? 'bg-cyan-500 text-slate-950 shadow-xs' : 'text-slate-300 hover:text-white'
                 }`}
-                title="Print all 74 publications (Scopus, IEEE & Google Scholar)"
+                title="Print all publications (Scopus, IEEE & Google Scholar)"
               >
                 All Articles ({deduplicatedAllPubs.length})
               </button>
@@ -469,7 +469,7 @@ export default function AcademicCVModal({
               </h2>
               <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center text-xs">
                 <div className="border border-slate-300 p-2.5 rounded bg-slate-50/70 shadow-xs">
-                  <div className="font-black text-slate-950 text-sm sm:text-base">41 Scopus</div>
+                  <div className="font-black text-slate-950 text-sm sm:text-base">{m.scopusDisplay || '43'} Scopus</div>
                   <div className="text-[10px] text-slate-700 font-semibold uppercase tracking-wider mt-0.5">Indexed Publications</div>
                 </div>
                 <div className="border border-slate-300 p-2.5 rounded bg-slate-50/70 shadow-xs">

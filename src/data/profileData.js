@@ -595,12 +595,12 @@ export const PROFESSOR_PROFILE = {
   ],
 
   metrics: {
-    publicationsCount: 47,
-    publicationsDisplay: "47+",
-    scopusPublicationsCount: 41,
-    scopusDisplay: "41",
-    ieeeCount: 27,
-    ieeeDisplay: "27",
+    publicationsCount: 85,
+    publicationsDisplay: "50+",
+    scopusPublicationsCount: 43,
+    scopusDisplay: "43",
+    ieeeCount: 36,
+    ieeeDisplay: "36",
     totalCitations: 393,
     citationsDisplay: "393+",
     hIndex: 12,

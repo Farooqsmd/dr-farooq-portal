@@ -21,7 +21,7 @@ export default function Navbar({ activeTab, setActiveTab, dynamicMetrics, onOpen
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
 
   const m = dynamicMetrics || PROFESSOR_PROFILE.metrics;
-  const badgeLabel = `${m?.patentsDisplay || '12'} | ${m?.scopusDisplay || '41'}`;
+  const badgeLabel = `${m?.patentsDisplay || '12'} | ${m?.scopusDisplay || '43'}`;
 
   const navItems = [
     { id: 'about', label: 'About', icon: User },
