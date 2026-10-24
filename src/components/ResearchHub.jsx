@@ -64,7 +64,7 @@ export default function ResearchHub({ setActiveTab, dynamicState, bioSync, onOpe
   const counts = useMemo(() => {
     const ieeeCount = m.ieeeCount ? Number(m.ieeeCount) : Math.max(36, allPublications.filter(p => (p.sources || []).includes('IEEE Xplore')).length);
     const scopusList = allPublications.filter(p => (p.sources || []).includes('Scopus'));
-    const scopusCount = m.scopusPublicationsCount ? Number(m.scopusPublicationsCount) : Math.max(43, scopusList.length);
+    const scopusCount = m.scopusPublicationsCount ? Number(m.scopusPublicationsCount) : Math.max(46, scopusList.length);
     const scopusJournalsCount = allPublications.filter(p => (p.sources || []).includes('Scopus') && !(p.sources || []).includes('IEEE Xplore')).length;
     const awardsCount = awardsList.length;
     const patentsCount = patentsList.length;
@@ -259,10 +259,10 @@ export default function ResearchHub({ setActiveTab, dynamicState, bioSync, onOpe
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 pt-4 border-t border-slate-800">
             <div className="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-3.5 backdrop-blur-xs">
               <div className="text-xl sm:text-2xl font-extrabold text-cyan-400">
-                {m.scopusDisplay || '43'} / {m.publicationsDisplay || '85+'}
+                {m.scopusDisplay || '46'} / {m.publicationsDisplay || '85+'}
               </div>
               <div className="text-xs font-bold text-slate-200 mt-1">Research Publications</div>
-              <div className="text-[10.5px] text-slate-400 mt-0.5">{m.scopusDisplay || '43'} Scopus ({m.ieeeDisplay || '36'} IEEE)</div>
+              <div className="text-[10.5px] text-slate-400 mt-0.5">{m.scopusDisplay || '46'} Scopus ({m.ieeeDisplay || '36'} IEEE)</div>
             </div>
 
             <div className="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-3.5 backdrop-blur-xs">
@@ -391,7 +391,7 @@ export default function ResearchHub({ setActiveTab, dynamicState, bioSync, onOpe
             </span>
           </button>
 
-          {/* 4. Scopus Indexed Documents (43) */}
+          {/* 4. Scopus Indexed Documents (46) */}
           <button
             onClick={() => { setActiveCategory('scopus'); setSelectedTag('All'); }}
             className={`flex items-center space-x-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-150 cursor-pointer ${

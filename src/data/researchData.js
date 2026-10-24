@@ -1,12 +1,12 @@
 // Verified Research Publications & Patents Repository for Dr. S. Md. Farooq
 // Updated with official record from 'Farooq Patetnts.xlsx' (Department of CSE, Santhiram Engineering College)
-// Synced with Scopus (43 Scopus Indexed Publications), IEEE Xplore (36 IEEE Conferences), Google Scholar (85+ Publications, 393+ Citations), and ORCID (0000-0003-0936-1980)
+// Synced with Scopus (46 Scopus Indexed Publications), IEEE Xplore (36 IEEE Conferences), Google Scholar (85+ Publications, 393+ Citations), and ORCID (0000-0003-0936-1980)
 
 export const RESEARCH_METRICS = {
   "publicationsCount": 85,
-  "publicationsDisplay": "50+",
-  "scopusPublicationsCount": 43,
-  "scopusDisplay": "43",
+  "publicationsDisplay": "85+",
+  "scopusPublicationsCount": 46,
+  "scopusDisplay": "46",
   "ieeeCount": 36,
   "ieeeDisplay": "36",
   "totalCitations": 393,
@@ -220,6 +220,69 @@ export const PATENTS_DATA = [
 ];
 
 export const PUBLICATIONS_DATA = [
+  {
+    "id": "pub-71",
+    "title": "Quantum Federated Learning for Privacy-Preserving Anomaly Detection",
+    "authors": "Dr. S. Md. Farooq et al.",
+    "venue": "2026 IEEE International Conference on Electronic Systems and Computing (ICESC)",
+    "year": "2026",
+    "citations": 0,
+    "type": "Conference",
+    "doi": "10.1109/icesc70182.2026.11686925",
+    "sources": [
+      "Scopus",
+      "IEEE Xplore",
+      "Google Scholar"
+    ],
+    "url": "https://doi.org/10.1109/icesc70182.2026.11686925",
+    "tags": [
+      "IEEE Xplore",
+      "Scopus Indexed",
+      "Quantum Computing & Privacy"
+    ]
+  },
+  {
+    "id": "pub-73",
+    "title": "Quantum Reinforcement Learning Agent for Adaptive Firewall Rule Optimization Under Dynamic Attacks",
+    "authors": "Dr. S. Md. Farooq et al.",
+    "venue": "2026 6th International Conference on Computer Vision and Bio-Inspired Computing (ICCVBIC)",
+    "year": "2026",
+    "citations": 0,
+    "type": "Conference",
+    "doi": "10.1109/iccvbic71195.2026.11689341",
+    "sources": [
+      "Scopus",
+      "IEEE Xplore",
+      "Google Scholar"
+    ],
+    "url": "https://doi.org/10.1109/iccvbic71195.2026.11689341",
+    "tags": [
+      "IEEE Xplore",
+      "Scopus Indexed",
+      "Quantum Computing & Cybersecurity"
+    ]
+  },
+  {
+    "id": "pub-74",
+    "title": "Generative Adversarial Network for Synthetic Cyber Attack Traffic Generation and IDS Augmentation",
+    "authors": "Dr. S. Md. Farooq et al.",
+    "venue": "2026 6th International Conference on Computer Vision and Bio-Inspired Computing (ICCVBIC)",
+    "year": "2026",
+    "citations": 0,
+    "type": "Conference",
+    "doi": "10.1109/iccvbic71195.2026.11689024",
+    "sources": [
+      "Scopus",
+      "IEEE Xplore",
+      "Google Scholar"
+    ],
+    "url": "https://doi.org/10.1109/iccvbic71195.2026.11689024",
+    "tags": [
+      "IEEE Xplore",
+      "Scopus Indexed",
+      "Generative AI & Cybersecurity"
+    ]
+  },
   {
     "title": "Bharat Sum: OCR-Enabled Multilingual News Summarization and Bias Analysis Framework",
     "authors": "Dr. S. Md. Farooq, S. V. Kishore, et al.",
@@ -1798,81 +1861,5 @@ export const PUBLICATIONS_DATA = [
     ],
     "url": "https://scholar.google.com/scholar?q=Amplification%20of%20software%20requirements%20documents%20by%20means%20of%20archetypal%20instantiation",
     "id": "pub-70"
-  },
-  {
-    "id": "pub-71",
-    "title": "Quantum Federated Learning for Privacy-Preserving Anomaly Detection",
-    "authors": "Dr. S. Md. Farooq et al.",
-    "venue": "2026 IEEE International Conference on Electronic Systems and Computing (ICESC)",
-    "year": "2026",
-    "citations": 0,
-    "type": "Conference",
-    "doi": "10.1109/icesc70182.2026.11686925",
-    "sources": [
-      "IEEE Xplore",
-      "Google Scholar"
-    ],
-    "url": "https://doi.org/10.1109/icesc70182.2026.11686925",
-    "tags": [
-      "IEEE Xplore",
-      "AI / ML"
-    ]
-  },
-  {
-    "id": "pub-72",
-    "title": "Variational Quantum Eigen Solver Based Molecular Toxicity Prediction for Drug Candidate Screening",
-    "authors": "Dr. S. Md. Farooq et al.",
-    "venue": "2026 IEEE International Conference on Computational Methods and Software Systems (CMSS)",
-    "year": "2026",
-    "citations": 0,
-    "type": "Conference",
-    "doi": "10.1109/cmss69636.2026.11689499",
-    "sources": [
-      "IEEE Xplore",
-      "Google Scholar"
-    ],
-    "url": "https://doi.org/10.1109/cmss69636.2026.11689499",
-    "tags": [
-      "IEEE Xplore",
-      "AI / ML"
-    ]
-  },
-  {
-    "id": "pub-73",
-    "title": "Quantum Reinforcement Learning Agent for Adaptive Firewall Rule Optimization Under Dynamic Attacks",
-    "authors": "Dr. S. Md. Farooq et al.",
-    "venue": "2026 6th International Conference on Computer Vision and Bio-Inspired Computing (ICCVBIC)",
-    "year": "2026",
-    "citations": 0,
-    "type": "Conference",
-    "doi": "10.1109/iccvbic71195.2026.11689341",
-    "sources": [
-      "IEEE Xplore",
-      "Google Scholar"
-    ],
-    "url": "https://doi.org/10.1109/iccvbic71195.2026.11689341",
-    "tags": [
-      "IEEE Xplore",
-      "AI / ML"
-    ]
-  },
-  {
-    "id": "pub-74",
-    "title": "Generative Adversarial Network for Synthetic Cyber Attack Traffic Generation and IDS Augmentation",
-    "authors": "Dr. S. Md. Farooq et al.",
-    "venue": "2026 6th International Conference on Computer Vision and Bio-Inspired Computing (ICCVBIC)",
-    "year": "2026",
-    "citations": 0,
-    "type": "Conference",
-    "doi": "10.1109/iccvbic71195.2026.11689024",
-    "sources": [
-      "IEEE Xplore",
-      "Google Scholar"
-    ],
-    "url": "https://doi.org/10.1109/iccvbic71195.2026.11689024",
-    "tags": [
-      "IEEE Xplore",
-      "AI / ML"
-    ]
   }
 ];
